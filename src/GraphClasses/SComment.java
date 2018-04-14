@@ -1,4 +1,4 @@
-package com.company;
+package GraphClasses;
 
 public class SComment {
     private SAccount commentMaker;

@@ -1,4 +1,4 @@
-package com.company;
+package GraphClasses;
 
 public class Main {
 
@@ -6,4 +6,6 @@ public class Main {
 	// write your code here
         System.out.println("David Ibrahim");
     }
+
+    public int x(){return 5;}
 }

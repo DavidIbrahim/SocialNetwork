@@ -1,4 +1,4 @@
-package com.company;
+package GraphClasses;
 
 import java.util.ArrayList;
 
