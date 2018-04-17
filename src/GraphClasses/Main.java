@@ -1,23 +1,44 @@
 package GraphClasses;
 
 import David.ProjectExceptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import static GraphClasses.SaveAndLoad.*;
 
 public class Main {
 
-    public static void main(String[] args) throws ProjectExceptions.AccountException {
+    public static void main(String[] args) throws ProjectExceptions.AccountException, IOException {
 
-	    System.out.println("Mina");
-
+        SaveAndLoad SL = new SaveAndLoad();
         SocialGraph graph = new SocialGraph();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         try {
-            graph.addNewAccount("mina","mina");
+            graph.addNewAccount("ta","ta");
         } catch (ProjectExceptions.AccountException e) {
             e.printStackTrace();
         }
@@ -25,13 +46,10 @@ public class Main {
         graph.addNewAccount("david","david");
 
 
-            SaveAndLoad SL = new SaveAndLoad();
-                SL.Save(graph);
+        SL.save(graph);
 
 
-
-
-        }
+    }
 
     public int x(){return 5;}
 

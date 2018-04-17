@@ -11,23 +11,6 @@ import java.io.Reader;
 
 public class SaveAndLoad {
 
-    public static  void Save  ( SocialGraph x     )
-           {
-               Writer writer = null;
-               try {
-                   writer = new FileWriter("SocialGraph.json");
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               System.out.println("saving");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(x, writer);
-            System.out.println("saved");
-
-
-    }
-
-
 
     public static  void Load (  SocialGraph x , Reader reader    )
     {
@@ -36,5 +19,27 @@ public class SaveAndLoad {
             x = gson.fromJson(reader, SocialGraph.class);
             System.out.println("loaded");
     }
+
+
+
+    public static void save(SocialGraph graph) throws IOException {
+        System.out.println("saving");
+        Writer writer = new FileWriter("Output.json");
+        Gson gson = new GsonBuilder().create();
+        gson.toJson(graph, writer);
+
+        writer.close();
+
+        System.out.println("saved");
+
+
+    }
+
+
+
+
+
+
+
 
 }
