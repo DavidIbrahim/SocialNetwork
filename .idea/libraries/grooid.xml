@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="grooid">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/grooid/groovy-test-2.4.15-grooid.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/grooid/groovy-2.4.15-grooid.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

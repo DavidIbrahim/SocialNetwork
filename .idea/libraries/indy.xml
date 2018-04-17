@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="indy">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-jmx-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-servlet-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-console-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-testng-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-jsr223-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-test-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-templates-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-json-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-docgenerator-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-groovysh-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-groovydoc-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-sql-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-bsf-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-ant-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-xml-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-swing-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/indy/groovy-nio-2.4.15-indy.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -20,5 +20,8 @@
         <jarDirectory url="file://C:/java classes/gson-2.2.2.jar" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="gson-2.2.2" level="project" />
+    <orderEntry type="library" name="api" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
