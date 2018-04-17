@@ -1,37 +1,256 @@
 package David;
 
 import GraphClasses.SAccount;
+import GraphClasses.SPost;
 import GraphClasses.SocialGraph;
+import David.ProjectExceptions.*;
+
+import java.io.*;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 
 public class QueryExecutor {
     private static final String newAccountCommand = "createAccount";
-    private SAccount sAccount ;
+    private static final String loginCommand = "login";
+    private static final String logoutCommand = "logout";
+    private static final String showMyFriendsCommand = "showMyFriends";
+    private static final String addFriendCommand = "addFriend";
+    private static final String makePostCommand = "post";
+    private static final String loginErrorMsg = "You need to login first";
+    private static final String showPostsCommand = "showPosts";
+    private static final String openPostCommand = "openPost";
+    private static final String makeCommentCommand = "makeComment";
 
-    public QueryExecutor() {
+
+    private static SAccount currentAccount;
+    private static ArrayList<SPost> currentPosts;
+    private static SPost currentPost;
+
+
+    public static String executeQuery(SocialGraph graph, String query) {
+        String reply = "";
+        //create Account
+        if (query.contains(newAccountCommand)) {
+            reply = addAccQuery(graph, query.substring(newAccountCommand.length() + 1));
+        }
+
+
+
+        //login
+        else if (query.substring(0, loginCommand.length()).equals(loginCommand)) {
+            reply = loginQuery(graph, query.substring(loginCommand.length() + 1));
+        }
+
+        //logout
+        else if (query.substring(0, logoutCommand.length()).equals(logoutCommand)) {
+            if (currentAccount == null)
+                reply = "Error : No account is logged in";
+            else {
+                currentAccount = null;
+                currentPost = null;
+                currentPosts = null;
+            }
+        }
+
+        //show my friend
+
+        else if (query.contains(showMyFriendsCommand)) {
+            reply = showFriends();
+        }
+
+
+
+
+        //make post
+        else if (query.substring(0, makePostCommand.length()).equals(makePostCommand)) {
+            reply = makePost(query.substring(makePostCommand.length() + 1));
+        }
+
+
+
+        else if (query.substring(0, showPostsCommand.length()).equals(showPostsCommand)) {
+            reply = showPosts(graph, query);
+        } else if (query.substring(0, openPostCommand.length()).equals(openPostCommand)) {
+            reply = openPost(graph, query.substring(openPostCommand.length() + 1));
+        }
+        //add friend;
+        else if (query.substring(0, addFriendCommand.length()).equals(addFriendCommand)) {
+            reply = addFriend(graph, query.substring(addFriendCommand.length() + 1));
+        }
+        //make comment
+
+        else if (query.substring(0, makeCommentCommand.length()).equals(makeCommentCommand)) {
+            reply = makeComment(query.substring(makeCommentCommand.length() + 1));
+        }
+        return reply;
     }
-    public static void executeQuery(SocialGraph graph, String query){
-        if(query.contains(newAccountCommand)){
-            addAccQuery(graph,query.substring(newAccountCommand.length()+1));
+
+    private static String openPost(SocialGraph graph, String substring) {
+        if(isNumeric(substring)){
+            int postNumber = Integer.parseInt(substring);
+            if(postNumber<currentPosts.size()) {
+                currentPost = currentPosts.get(postNumber - 1);
+                return currentPost.toString();
+            }
+            else{
+                return "Error: Post No. " + postNumber + " doesn't exist";
+            }
+
+        }
+        else{
+            for (SPost post:currentPosts
+                 ) {
+                if(post.getPost().equals(substring)){
+                    currentPost = post;
+                    return post.toString();
+                }
+
+            }
+            return "Error: Couldn't Find the post";
+        }
+
+    }
+
+
+    private static String showPosts(SocialGraph graph, String query) {
+
+        if (currentAccount == null) return loginErrorMsg;
+        else {
+            SAccount account;
+            if (query.trim().length() == showPostsCommand.length())
+                account = currentAccount;
+            else {
+                String name = query.substring(showPostsCommand.length() + 1);
+                try {
+                    account = graph.getAccount(name);
+                } catch (AccountException e) {
+                    return e.getMessage();
+                }
+            }
+            currentPosts = account.getPosts();
+            if(currentPosts.size()==0) return "Error : There's No posts in "+account.getName()+"'s account";
+            StringBuilder stringBuilder = new StringBuilder();
+            int counter = 1;
+            for (SPost post :
+                    account.getPosts()) {
+                stringBuilder.append(counter+"- "+post.getPost()+'\n');
+                counter++;
+            }
+            stringBuilder.deleteCharAt(stringBuilder.length()-1);
+
+            return stringBuilder.toString();
+
+        }
+
+    }
+    private static String makeComment(String substring) {
+        if (currentPost == null) {
+            return "Error : you need to open a post first to make a comment";
+        } else {
+            currentPost.addComment(currentAccount,substring);
+            return "";
         }
     }
 
-    private static void addAccQuery(SocialGraph graph, String substring) {
+    private static String makePost(String substring) {
+        if (currentAccount == null) {
+            return loginErrorMsg;
+        } else {
+            currentAccount.addNewPost(substring);
+            return "";
+        }
+    }
+
+    private static String addFriend(SocialGraph graph, String substring) {
+        String reply = "";
+        if (currentAccount == null)
+            reply = loginErrorMsg;
+        else {
+
+            try {
+                currentAccount.addNewFriend(graph.getAccount(substring));
+            } catch (AccountException e) {
+                reply = "Error: "+e.getMessage();
+            } catch (AddFriendException e) {
+                reply = "Error: "+substring+ " is "+e.getMessage();
+            }
+        }
+        return reply;
+    }
+
+    private static String showFriends() {
+        String reply = "";
+        if (currentAccount == null)
+            reply = loginErrorMsg;
+        else {
+            reply = currentAccount.getFriends().toString();
+        }
+        return reply;
+    }
+
+    private static String loginQuery(SocialGraph graph, String substring) {
+        String[] namePass = substring.split(" ");
+        String reply = "";
+        if(currentAccount==null) {
+            try {
+                currentAccount = graph.getAccount(namePass[0], namePass[1]);
+                currentPosts = currentAccount.getPosts();
+            } catch (AccountException e) {
+                reply = e.getMessage() + ", couldn't login";
+                currentPosts = null;
+                currentAccount = null;
+                currentPost = null;
+            }
+        }
+        else{
+            reply = "Error : you need to logout first to use login command";
+        }
+        return reply;
+    }
+
+    private static String addAccQuery(SocialGraph graph, String substring) {
+        String reply = "";
         String[] namePass = substring.split(" ");
         try {
-            graph.addNewAccount(namePass[0],namePass[1]);
-        } catch (ProjectExceptions.AccountException e) {
-            System.out.println(e.getMessage()+", couldn't create new account");
+            graph.addNewAccount(namePass[0], namePass[1]);
+        } catch (AccountException e) {
+            reply = e.getMessage() + ", couldn't create new account";
         }
+
+        return reply;
+    }
+
+    private static boolean isNumeric(String str)
+    {
+        for (char c : str.toCharArray())
+        {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
     }
 
 
-
-    public static void main(String[]args){
+    public static void main(String[] args) {
         SocialGraph graph = new SocialGraph();
-        executeQuery(graph,"createAccount Ahmed 5678");
-        executeQuery(graph,"createAccount Ahmed 5678");
 
+        try {
+            FileReader randomTesting = new FileReader("res/randomQueryTesting.txt");
+            BufferedReader br = new BufferedReader(randomTesting);
 
+            for (String line; (line = br.readLine()) != null; ) {
+                String reply = executeQuery(graph, line);
+                if (!reply.equals(""))
+                    System.out.println(reply);
+            }
+
+            SaveAndLoadData.save(graph,"randomTesting");
+            br.close();
+            randomTesting.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("couldn't open  file");
+        } catch (IOException e) {
+            System.out.println("IO error");
+        }
 
 
     }

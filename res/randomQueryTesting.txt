@@ -1,0 +1,29 @@
+createAccount Talat 12345
+createAccount youssef 12345
+createAccount rameez 12345
+login rameez 12345
+addFriend Talat
+addFriend youssef
+showMyFriends
+post I love One Piece
+post I hate guys
+showPosts
+openPost 2
+openPost whatever
+openPost I love One Piece
+makeComment My favorite
+character is Luffy
+openPost 1
+addFriend Ahmed
+addFriend Talat
+login Talat 12345
+logout
+login Talat 12345
+showMyFriends
+showPosts
+showPosts rameez
+openPost 1
+makeComment anime is the best
+openPost 1
+showPosts youssef
+openPost 1
