@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="embeddable">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/embeddable/groovy-all-2.4.15-indy.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Groovy/Groovy-2.4.15/embeddable/groovy-all-2.4.15.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

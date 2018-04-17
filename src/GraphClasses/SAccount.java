@@ -3,7 +3,8 @@ package GraphClasses;
 import java.util.ArrayList;
 
 public class SAccount {
-    private ArrayList<SAccount> friends;
+
+    private ArrayList<String> friends;
     private String name;
     private String password;
     private ArrayList<SPost> posts;
@@ -12,14 +13,14 @@ public class SAccount {
         this.name = name;
         this.password = password;
         friends = new ArrayList<>();
-        posts = new ArrayList<>();
+        posts   = new ArrayList<>();
     }
 
     public void addNewPost(String post){
         posts.add(new SPost(post,this));
     }
     public void addNewFriend(SAccount newFriend) {
-        friends.add(newFriend);
+        friends.add(newFriend.name);
     }
 
     public String getName() {
@@ -29,4 +30,7 @@ public class SAccount {
     public String getPassword() {
         return password;
     }
+
+
+
 }
