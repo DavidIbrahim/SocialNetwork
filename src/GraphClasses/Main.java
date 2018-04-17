@@ -14,29 +14,10 @@ public class Main {
 
         SaveAndLoad SL = new SaveAndLoad();
         SocialGraph graph = new SocialGraph();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Reader reader;
+        reader = new InputStreamReader(Main.class.getResourceAsStream("Output.json"));
+        SL.load(graph,reader);
+       /*
         try {
             graph.addNewAccount("ta","ta");
         } catch (ProjectExceptions.AccountException e) {
@@ -44,6 +25,12 @@ public class Main {
         }
 
         graph.addNewAccount("david","david");
+
+
+
+        */
+
+
 
 
         SL.save(graph);
