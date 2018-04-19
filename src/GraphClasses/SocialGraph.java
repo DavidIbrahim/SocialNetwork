@@ -50,6 +50,10 @@ public class SocialGraph {
         }
     }
 
+    public int getNumberOfAccounts(){
+        return allTheAccounts.size();
+    }
+
 
     @Override
     public String toString() {

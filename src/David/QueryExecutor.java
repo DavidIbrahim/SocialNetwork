@@ -6,7 +6,6 @@ import GraphClasses.SocialGraph;
 import David.ProjectExceptions.*;
 
 import java.io.*;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class QueryExecutor {
@@ -179,7 +178,7 @@ public class QueryExecutor {
     }
 
     private static String showFriends() {
-        String reply = "";
+        String reply ;
         if (currentAccount == null)
             reply = loginErrorMsg;
         else {
@@ -229,21 +228,20 @@ public class QueryExecutor {
         return true;
     }
 
-
-    public static void main(String[] args) {
-        SocialGraph graph = new SocialGraph();
-
+    public static String executeQueryFile  (SocialGraph graph, String  queryFile) {
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            FileReader randomTesting = new FileReader("res/randomQueryTesting.txt");
+            FileReader randomTesting = new FileReader(queryFile);
             BufferedReader br = new BufferedReader(randomTesting);
 
             for (String line; (line = br.readLine()) != null; ) {
                 String reply = executeQuery(graph, line);
                 if (!reply.equals(""))
-                    System.out.println(reply);
+                    stringBuilder.append(reply+'\n');
             }
 
-            SaveAndLoadData.save(graph,"randomTesting");
+
+
             br.close();
             randomTesting.close();
         } catch (FileNotFoundException e) {
@@ -252,6 +250,13 @@ public class QueryExecutor {
             System.out.println("IO error");
         }
 
+
+        return stringBuilder.toString();
+    }
+    public static void main(String[] args) {
+        SocialGraph graph = new SocialGraph();
+        System.out.println(executeQueryFile(graph,"res/Test1/createAccTest1.txt"));
+        System.out.println(executeQueryFile(graph,"res/Test1/addFriendsTest1.txt"));
 
     }
 }

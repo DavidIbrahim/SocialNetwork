@@ -11,7 +11,7 @@ showPosts
 openPost 2
 openPost whatever
 openPost I love One Piece
-makeComment My favorite
+makeComment My favorite character is luffy
 character is Luffy
 openPost 1
 addFriend Ahmed
