@@ -10,6 +10,8 @@ public class SAccount {
     private String password;
     private ArrayList<String> friends;
     private ArrayList<SPost> posts;
+    private int numOfFollowers;
+    private ArrayList<String> follwedAccounts;
 
     public ArrayList<String> getFriends() {
         return friends;
@@ -26,6 +28,8 @@ public class SAccount {
         this.password = password;
         friends = new ArrayList<>();
         posts = new ArrayList<>();
+        numOfFollowers=0;
+        follwedAccounts=new ArrayList<>();
     }
 
     public void addNewPost(String post) {
@@ -42,6 +46,18 @@ public class SAccount {
         }
     }
 
+    public void followSomeone(SAccount newAccount) throws ProjectExceptions.FollowSomeoneException
+    {
+        if(!follwedAccounts.contains(newAccount.name))
+        {
+            follwedAccounts.add(newAccount.name);
+            newAccount.numOfFollowers++;
+        }
+        else
+        {
+            throw new ProjectExceptions.FollowSomeoneException(ProjectExceptions.MyExceptionCodes.ALREADY_FOLLWED);
+        }
+    }
     public String getName() {
         return name;
     }
@@ -61,4 +77,8 @@ public class SAccount {
     }
 
 
+    public int getNumOfFollowers()
+    {
+        return numOfFollowers;
+    }
 }
