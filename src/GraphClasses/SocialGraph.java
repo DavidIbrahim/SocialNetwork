@@ -3,7 +3,11 @@ package GraphClasses;
 import David.ProjectExceptions;
 import David.ProjectExceptions.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 
 public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
@@ -39,6 +43,7 @@ public class SocialGraph {
 
     }
 
+
     public SAccount getAccount(String name) throws AccountException {
 
         if (allTheAccounts.containsKey(name)) {
@@ -67,5 +72,11 @@ public class SocialGraph {
         s+= '}';
         return s;
 
+    }
+    public ArrayList<String>  getAllAccounts (){
+        String [] names = new String[0];
+        Set <String> set = allTheAccounts.keySet();
+        names = set.toArray(new String[0]);
+        return new ArrayList<String>(Arrays.asList(names));
     }
 }
