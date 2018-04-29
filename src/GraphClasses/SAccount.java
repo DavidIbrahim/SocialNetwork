@@ -12,6 +12,10 @@ public class SAccount {
     private ArrayList<SPost> posts;
     private int numOfFollowers;
     private ArrayList<String> follwedAccounts;
+    private static final int followersWeight=2;
+    private static final int friendsWeight=1;
+    private static final double likesWeight=0.1;
+    private double accountInfluencingValue;
 
     public ArrayList<String> getFriends() {
         return friends;
@@ -40,6 +44,8 @@ public class SAccount {
         if(!friends.contains(newFriend.name)) {
             friends.add(newFriend.name);
             newFriend.friends.add(this.name);
+            newFriend.accountInfluencingValue+=(double)friendsWeight;
+            accountInfluencingValue+=(double)friendsWeight;
         }
         else {
             throw new ProjectExceptions.AddFriendException(ProjectExceptions.MyExceptionCodes.ALREADY_FRIENDS);
@@ -52,6 +58,7 @@ public class SAccount {
         {
             follwedAccounts.add(newAccount.name);
             newAccount.numOfFollowers++;
+            newAccount.accountInfluencingValue+=(double)followersWeight;
         }
         else
         {
@@ -64,6 +71,14 @@ public class SAccount {
 
     public String getPassword() {
         return password;
+    }
+
+    public double getAccountInfluencingValue() {
+        return accountInfluencingValue;
+    }
+
+    public void setAccountInfluencingValue(double accountInfluencingValue) {
+        this.accountInfluencingValue = accountInfluencingValue;
     }
 
     @Override
