@@ -29,7 +29,7 @@ public class SocialGraph {
     }
 
 
-    public SAccount getAccount(String name, String password ) throws AccountException {
+    public SAccount getAccount(String name, String password) throws AccountException {
 
         if (allTheAccounts.containsKey(name)) {
             SAccount account = allTheAccounts.get(name);
@@ -39,8 +39,7 @@ public class SocialGraph {
                 throw new AccountException(ProjectExceptions.MyExceptionCodes.WRONG_PASSWORD);
 
             }
-        }
-        else {
+        } else {
             throw new AccountException(ProjectExceptions.MyExceptionCodes.NO_ACCOUNT);
         }
 
@@ -52,13 +51,12 @@ public class SocialGraph {
         if (allTheAccounts.containsKey(name)) {
             SAccount account = allTheAccounts.get(name);
             return account;
-        }
-        else {
+        } else {
             throw new AccountException(ProjectExceptions.MyExceptionCodes.NO_ACCOUNT);
         }
     }
 
-    public int getNumberOfAccounts(){
+    public int getNumberOfAccounts() {
         return allTheAccounts.size();
     }
 
@@ -66,22 +64,23 @@ public class SocialGraph {
     @Override
     public String toString() {
         String s = "SocialGraph{" + '\n';
-        for (String name: allTheAccounts.keySet()
-             ) {
-            s += name+'\n';
+        for (String name : allTheAccounts.keySet()
+                ) {
+            s += name + '\n';
 
         }
-        s += "Number Of Accounts = " + allTheAccounts.size()+'\n';
-        s+= '}';
+        s += "Number Of Accounts = " + allTheAccounts.size() + '\n';
+        s += '}';
         return s;
 
     }
-  public ArrayList<String>  getAllAccounts (){
-        String [] names = new String[0];
-        Set <String> set = allTheAccounts.keySet();
+
+    public ArrayList<String> getAllAccounts() {
+        String[] names = new String[0];
+        Set<String> set = allTheAccounts.keySet();
         names = set.toArray(new String[0]);
         return new ArrayList<String>(Arrays.asList(names));
-      }
+    }
 
     public static HashMap sortByValues(HashMap map) {
         List list = new LinkedList(map.entrySet());
@@ -96,56 +95,49 @@ public class SocialGraph {
         // Here I am copying the sorted list in HashMap
         // using LinkedHashMap to preserve the insertion order
         HashMap sortedHashMap = new LinkedHashMap();
-        for (Iterator it = list.iterator(); it.hasNext();) {
+        for (Iterator it = list.iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
             sortedHashMap.put(entry.getKey(), entry.getValue());
         }
         return sortedHashMap;
     }
 
-    public ArrayList<String> findInfluencingPeople(int wantedNumber)
-    {
+    public ArrayList<String> findInfluencingPeople(int wantedNumber) {
         //ArrayList<SAccount> influencingPeople=new ArrayList<>(wantedNumber);
-        HashMap<String,Double> influencingPeople=new HashMap<>();
-        int iterator=0;
-        for(Map.Entry me:allTheAccounts.entrySet())
-        {
-            if(iterator<wantedNumber)
-            {
+        HashMap<String, Double> influencingPeople = new HashMap<>();
+        int iterator = 0;
+        for (Map.Entry me : allTheAccounts.entrySet()) {
+            if (iterator < wantedNumber) {
                 //String s=(String)me.getKey();
-                influencingPeople.put(me.getKey().toString(),((SAccount)me.getValue()).getAccountInfluencingValue());
+                influencingPeople.put(me.getKey().toString(), ((SAccount) me.getValue()).getAccountInfluencingValue());
                 iterator++;
-            }
-            else
-            {
-                influencingPeople=sortByValues(influencingPeople);
-                String s="";
-                double d=0;
-                int temp=0;
-                boolean replaceLast=false;
-                for(Map.Entry me1:influencingPeople.entrySet())
-                {
+            } else {
+                influencingPeople = sortByValues(influencingPeople);
+                String s = "";
+                double d = 0;
+                int temp = 0;
+                boolean replaceLast = false;
+                for (Map.Entry me1 : influencingPeople.entrySet()) {
                     temp++;
-                    if(((SAccount)me.getValue()).getAccountInfluencingValue()>(Double)me1.getValue()&&!replaceLast)
-                    {
-                        s=me.getKey().toString();
-                        d=((SAccount) me.getValue()).getAccountInfluencingValue();
-                        replaceLast=true;
+                    if (((SAccount) me.getValue()).getAccountInfluencingValue() > (Double) me1.getValue() && !replaceLast) {
+                        s = me.getKey().toString();
+                        d = ((SAccount) me.getValue()).getAccountInfluencingValue();
+                        replaceLast = true;
                     }
-                    if(replaceLast&&temp==iterator)
-                    {
+                    if (replaceLast && temp == iterator) {
                         influencingPeople.remove(me1.getKey().toString());
-                        influencingPeople.put(s,d);
+                        influencingPeople.put(s, d);
                     }
                 }
-                replaceLast=false;
+                replaceLast = false;
 
             }
         }
-        influencingPeople=sortByValues(influencingPeople);
-        ArrayList<String> influencingPeopleList=new ArrayList<String>(influencingPeople.keySet());
+        influencingPeople = sortByValues(influencingPeople);
+        ArrayList<String> influencingPeopleList = new ArrayList<String>(influencingPeople.keySet());
         return influencingPeopleList;
 
-    
+
+    }
 }
 

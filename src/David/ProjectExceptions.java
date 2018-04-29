@@ -19,21 +19,21 @@ public class ProjectExceptions {
 
         }
     }
-  public static class SuggestedFriendsException extends Exception{
+  public static class SuggestedFriendsException extends Exception {
 
-        public SuggestedFriendsException (MyExceptionCodes code) {
+      public SuggestedFriendsException(MyExceptionCodes code) {
 
+          super(code.getMsg());
+      }
+  }
+
+    public static class FollowSomeoneException extends Exception {
+        public FollowSomeoneException(MyExceptionCodes code) {
             super(code.getMsg());
-        }
 
-    public static class FollowSomeoneException extends Exception
-    {
-        public FollowSomeoneException(MyExceptionCodes code)
-        {
-            super(code.getMsg());
-    
-    
+
         }
+    }
 
     public static enum MyExceptionCodes {
         WRONG_PASSWORD(0, "the password is wrong"),
@@ -41,10 +41,9 @@ public class ProjectExceptions {
         ACCOUNT_EXIST(2,"the account already exists"),
         ALREADY_FRIENDS(3,"already a friend"),
 
-        ALREADY_FOLLWED(4,"already follwed");
+        ALREADY_FOLLWED(4,"already follwed"),
 
         NO_SUGGESTED_FRIENDS(5,"there's no suggested friends");
-
 
 
         private final int id;
