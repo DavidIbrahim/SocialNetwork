@@ -19,6 +19,8 @@ public class QueryExecutor {
     private static final String showPostsCommand = "showPosts";
     private static final String openPostCommand = "openPost";
     private static final String makeCommentCommand = "makeComment";
+    private static final String suggestFriendsCommand = "suggestFriends";
+
 
 
     private static SAccount currentAccount;
@@ -26,7 +28,7 @@ public class QueryExecutor {
     private static SPost currentPost;
 
 
-    public static String executeQuery(SocialGraph graph, String query) {
+    public static String executeQuery(SocialGraph graph, String query) throws AccountException {
         String reply = "";
         //create Account
         if (query.contains(newAccountCommand)) {
@@ -81,8 +83,46 @@ public class QueryExecutor {
         else if (query.substring(0, makeCommentCommand.length()).equals(makeCommentCommand)) {
             reply = makeComment(query.substring(makeCommentCommand.length() + 1));
         }
+        else if (query.substring(0, suggestFriendsCommand.length()).equals(suggestFriendsCommand)) {
+
+            if(query.trim().length()==suggestFriendsCommand.length()){
+                reply = suggestFriends(5,graph);
+            }
+            else {
+                String noOfFriendsStr = query.substring(suggestFriendsCommand.length() + 1);
+                reply = suggestFriends(Integer.parseInt(noOfFriendsStr.trim()),graph);
+            }
+        }
         return reply;
     }
+
+    private static String suggestFriends(int numberOfAccountsToSuggest,SocialGraph graph) throws AccountException {
+        if(currentAccount==null){
+            return loginErrorMsg;
+        }
+        else {
+            try {
+                ArrayList<String> suggestedAccounts = currentAccount.getSuggestedFriends(graph);
+                StringBuilder sb = new StringBuilder();
+                sb.append("Suggested Accounts : [");
+                int  noOfFriendsToSuggest = Math.min(suggestedAccounts.size(),numberOfAccountsToSuggest);
+                for (int i = 0; i <noOfFriendsToSuggest ; i++) {
+                    sb.append(suggestedAccounts.get(i));
+                    sb.append(", ");
+
+                }
+                sb.delete(sb.length()-2,sb.length());
+
+                sb.append("]");
+                return sb.toString();
+
+            }  catch (SuggestedFriendsException e) {
+                return "Error : "+e.getMessage();
+            }
+        }
+
+    }
+
 
     private static String openPost(SocialGraph graph, String substring) {
         if(isNumeric(substring)){
@@ -228,7 +268,7 @@ public class QueryExecutor {
         return true;
     }
 
-    public static String executeQueryFile  (SocialGraph graph, String  queryFile) {
+    public static String executeQueryFile  (SocialGraph graph, String  queryFile) throws AccountException {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             FileReader randomTesting = new FileReader(queryFile);
@@ -253,10 +293,11 @@ public class QueryExecutor {
 
         return stringBuilder.toString();
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AccountException {
         SocialGraph graph = new SocialGraph();
         System.out.println(executeQueryFile(graph,"res/Test1/createAccTest1.txt"));
         System.out.println(executeQueryFile(graph,"res/Test1/addFriendsTest1.txt"));
+
 
     }
 }

@@ -43,7 +43,7 @@ public class ProjectExceptions {
 
         ALREADY_FOLLWED(4,"already follwed"),
 
-        NO_SUGGESTED_FRIENDS(5,"there's no suggested friends");
+        NO_SUGGESTED_FRIENDS(5,"there's no Accounts to suggest");
 
 
         private final int id;
