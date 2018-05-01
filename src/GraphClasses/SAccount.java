@@ -100,20 +100,20 @@ public class SAccount {
                 '}';
     }
 
-    public ArrayList <String> getSuggestedFriends (SocialGraph All) throws AccountException, SuggestedFriendsException {
+    public ArrayList <String> getSuggestedFriends (SocialGraph All , int numberOfSuggested) throws AccountException, SuggestedFriendsException {
         ArrayList <String > suggestedFriendsNames = new ArrayList<String>();
         ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<SuggestedFriend>();
         HashMap< String, Integer> Detected = new HashMap();
-        Queue <String> Q = new LinkedList<String>();
+        Queue <String> q = new LinkedList<String>();
         if(this.getFriends().size()==(All.getNumberOfAccounts()-1)){
             throw new SuggestedFriendsException(MyExceptionCodes.NO_SUGGESTED_FRIENDS); // user is already friend with all graph.
         }
-        /////////////////////Adding All friends of friends to queue Q.
+        /////////////////////Adding All friends of friends to queue q.
         for(int i=0;i<friends.size();i++){
-            Q.addAll(All.getAccount(friends.get(i)).getFriends());
+            q.addAll(All.getAccount(friends.get(i)).getFriends());
         }
-        while ((!Q.isEmpty())&&(Detected.size()<10)){
-            String currentUser = Q.poll();
+        while ((!q.isEmpty())&&(Detected.size()<numberOfSuggested)){
+            String currentUser = q.poll();
             if(!friends.contains(currentUser)&&(this.name!=currentUser)){ ///making sure the friend of friend isn't already a friend or the user himself.
                 Detected.put(currentUser,0);
                 for(int i=0;i<All.getAccount(currentUser).getFriends().size();i++){
@@ -122,7 +122,7 @@ public class SAccount {
                         Detected.put(currentUser,Detected.get(currentUser)+1); //// incrementing mutual friends for current user.
                     }
                     else {
-                        Q.add(friendOfCurrentUser);
+                        q.add(friendOfCurrentUser);
                     }
                 }
             }
@@ -131,22 +131,26 @@ public class SAccount {
        ArrayList <String> allUsers = new ArrayList<>(All.getAllAccounts());
        for(int i=0;i<allUsers.size();i++){
            suggestedFriendsNames.add(allUsers.get(i));
-           if(i==10)
+           if(i==numberOfSuggested)
                break;
        }
     }
     else {
         for (Map.Entry<String, Integer> entry : Detected.entrySet()) {
-            SuggestedFriend S = new SuggestedFriend(entry.getKey(), entry.getValue());
-            suggestedFriends.add(S);
+            SuggestedFriend s = new SuggestedFriend(entry.getKey(), entry.getValue());
+            suggestedFriends.add(s);
         }
         suggestedFriendsNames = sortSuggested(suggestedFriends);
     }
         return suggestedFriendsNames; //// suggested friends will be maximum 10 , it could be less.
     }
-    public ArrayList<String> sortSuggested (ArrayList<SuggestedFriend> S) {
-            ProbabilityCompare probabilityCompare = new ProbabilityCompare();
-            Collections.sort(S, probabilityCompare);
+    private ArrayList<String> sortSuggested (ArrayList<SuggestedFriend> S) {
+
+            Collections.sort(S, (S1, S2) -> {
+                if(S1.getProbability()<S2.getProbability()) return 1;
+                else if (S1.getProbability()>S2.getProbability()) return -1;
+                return 0;
+            });
             ArrayList<String> sortedSuggested = new ArrayList<String>();
             for (int i = 0; i < S.size(); i++) {
                 sortedSuggested.add(S.get(i).getName());
@@ -154,14 +158,6 @@ public class SAccount {
             return sortedSuggested;
         }
 
-    class ProbabilityCompare implements Comparator<SuggestedFriend> {
-        @Override
-        public int compare (SuggestedFriend S1 , SuggestedFriend S2){
-            if(S1.getProbability()<S2.getProbability()) return 1;
-            else if (S1.getProbability()>S2.getProbability()) return -1;
-            else return 0;
-        }
-    }
 
-    
+
 }
