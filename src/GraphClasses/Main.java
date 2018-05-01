@@ -1,6 +1,7 @@
 package GraphClasses;
 
 import David.ProjectExceptions;
+import David.QueryExecutor;
 import David.SaveAndLoadData;
 import java.io.*;
 import java.util.ArrayList;
@@ -31,9 +32,35 @@ public class Main {
 
 
        SocialGraph graph = new SocialGraph();
-        executeQueryFile(graph,"res/Test1/createAccTest1.txt");
-        executeQueryFile(graph,"res/Test1/addFriendsTest1.txt");
+        QueryExecutor.executeQueryFile(graph,"res/Test1/createAccTest1.txt");
+        QueryExecutor.executeQueryFile(graph,"res/Test1/addFriendsTest1.txt");
         System.out.println("Number of accounts in the graph = "+graph.getNumberOfAccounts());
+        System.out.println(QueryExecutor.executeQueryFile(graph,"res/Test1/randomTest1.txt"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /*-------------- Talaat Test -----------------------------------------------------------*/

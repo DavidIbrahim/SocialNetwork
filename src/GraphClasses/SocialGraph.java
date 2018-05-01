@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
+    private HashMap<String, ArrayList<SPost>> hashTagsMap;
 
     public SocialGraph() {
         allTheAccounts = new HashMap<>();
@@ -27,6 +28,8 @@ public class SocialGraph {
 
         allTheAccounts.put(name, new SAccount(name, password));
     }
+
+
 
 
     public SAccount getAccount(String name, String password) throws AccountException {
@@ -49,8 +52,7 @@ public class SocialGraph {
     public SAccount getAccount(String name) throws AccountException {
 
         if (allTheAccounts.containsKey(name)) {
-            SAccount account = allTheAccounts.get(name);
-            return account;
+            return allTheAccounts.get(name);
         } else {
             throw new AccountException(ProjectExceptions.MyExceptionCodes.NO_ACCOUNT);
         }
@@ -134,10 +136,19 @@ public class SocialGraph {
             }
         }
         influencingPeople = sortByValues(influencingPeople);
-        ArrayList<String> influencingPeopleList = new ArrayList<String>(influencingPeople.keySet());
-        return influencingPeopleList;
+        return new ArrayList<String>(influencingPeople.keySet());
 
 
+    }
+
+
+    //hashtag functionality
+    public static void  addNewPost(SAccount account,String post){
+        account.addNewPost(post);
+    }
+
+    public static ArrayList<SPost> hashTagSearch(String key, HashMap<String,ArrayList<SPost>> hashMap){
+        return hashMap.get(key); ///returns null if arraylist is empty
     }
 }
 

@@ -32,7 +32,7 @@ public class SAccount {
 
 
 
-    public SAccount(String name, String password) {
+    protected SAccount(String name, String password) {
         this.name = name;
         this.password = password;
         friends = new ArrayList<>();
@@ -41,7 +41,7 @@ public class SAccount {
         follwedAccounts=new ArrayList<>();
     }
 
-    public void addNewPost(String post) {
+    protected void addNewPost(String post) {
         posts.add(new SPost(post, this));
     }
 
@@ -101,10 +101,10 @@ public class SAccount {
     }
 
     public ArrayList <String> getSuggestedFriends (SocialGraph All , int numberOfSuggested) throws AccountException, SuggestedFriendsException {
-        ArrayList <String > suggestedFriendsNames = new ArrayList<String>();
-        ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<SuggestedFriend>();
+        ArrayList <String > suggestedFriendsNames = new ArrayList<>();
+        ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<>();
         HashMap< String, Integer> Detected = new HashMap();
-        Queue <String> q = new LinkedList<String>();
+        Queue <String> q = new LinkedList<>();
         if(this.getFriends().size()==(All.getNumberOfAccounts()-1)){
             throw new SuggestedFriendsException(MyExceptionCodes.NO_SUGGESTED_FRIENDS); // user is already friend with all graph.
         }
@@ -114,10 +114,10 @@ public class SAccount {
         }
         while ((!q.isEmpty())&&(Detected.size()<numberOfSuggested)){
             String currentUser = q.poll();
-            if(!friends.contains(currentUser)&&(this.name!=currentUser)){ ///making sure the friend of friend isn't already a friend or the user himself.
+            if(!friends.contains(currentUser)&&(!this.name.equals(currentUser))){ ///making sure the friend of friend isn't already a friend or the user himself.
                 Detected.put(currentUser,0);
                 for(int i=0;i<All.getAccount(currentUser).getFriends().size();i++){
-                    String friendOfCurrentUser = new String(All.getAccount(currentUser).getFriends().get(i));
+                    String friendOfCurrentUser = All.getAccount(currentUser).getFriends().get(i);
                     if(friends.contains(friendOfCurrentUser)){
                         Detected.put(currentUser,Detected.get(currentUser)+1); //// incrementing mutual friends for current user.
                     }
@@ -151,10 +151,10 @@ public class SAccount {
                 else if (S1.getProbability()>S2.getProbability()) return -1;
                 return 0;
             });
-            ArrayList<String> sortedSuggested = new ArrayList<String>();
-            for (int i = 0; i < S.size(); i++) {
-                sortedSuggested.add(S.get(i).getName());
-            }
+            ArrayList<String> sortedSuggested = new ArrayList<>();
+        for (SuggestedFriend value : S) {
+            sortedSuggested.add(value.getName());
+        }
             return sortedSuggested;
         }
 

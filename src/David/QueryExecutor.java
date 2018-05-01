@@ -102,19 +102,9 @@ public class QueryExecutor {
         }
         else {
             try {
-                ArrayList<String> suggestedAccounts = currentAccount.getSuggestedFriends(graph);
-                StringBuilder sb = new StringBuilder();
-                sb.append("Suggested Accounts : [");
-                int  noOfFriendsToSuggest = Math.min(suggestedAccounts.size(),numberOfAccountsToSuggest);
-                for (int i = 0; i <noOfFriendsToSuggest ; i++) {
-                    sb.append(suggestedAccounts.get(i));
-                    sb.append(", ");
+                ArrayList<String> suggestedAccounts = currentAccount.getSuggestedFriends(graph,numberOfAccountsToSuggest);
 
-                }
-                sb.delete(sb.length()-2,sb.length());
-
-                sb.append("]");
-                return sb.toString();
+                return "Suggested: "+suggestedAccounts.toString();
 
             }  catch (SuggestedFriendsException e) {
                 return "Error : "+e.getMessage();
@@ -195,7 +185,7 @@ public class QueryExecutor {
         if (currentAccount == null) {
             return loginErrorMsg;
         } else {
-            currentAccount.addNewPost(substring);
+            SocialGraph.addNewPost(currentAccount,substring);
             return "";
         }
     }
@@ -222,7 +212,7 @@ public class QueryExecutor {
         if (currentAccount == null)
             reply = loginErrorMsg;
         else {
-            reply = currentAccount.getFriends().toString();
+            reply ="Friends: "+ currentAccount.getFriends().toString();
         }
         return reply;
     }
@@ -293,11 +283,10 @@ public class QueryExecutor {
 
         return stringBuilder.toString();
     }
-    public static void main(String[] args) throws AccountException {
+    public static void main(String[] args) throws AccountException, IOException {
         SocialGraph graph = new SocialGraph();
-        System.out.println(executeQueryFile(graph,"res/Test1/createAccTest1.txt"));
-        System.out.println(executeQueryFile(graph,"res/Test1/addFriendsTest1.txt"));
-
+        System.out.println(executeQueryFile(graph,"res/randomTesting/randomQueryTesting.txt"));
+        SaveAndLoadData.save(graph,"res/randomTesting/randomTesting.json");
 
     }
 }

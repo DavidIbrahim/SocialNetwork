@@ -24,6 +24,4 @@ showPosts
 showPosts rameez
 openPost 1
 makeComment anime is the best
-openPost 1
-showPosts youssef
-openPost 1
+suggestFriends 1

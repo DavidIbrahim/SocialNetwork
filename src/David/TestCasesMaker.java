@@ -106,11 +106,11 @@ public class TestCasesMaker {
     }
 
     public static void main(String[]args) throws IOException {
-        accountsData = new ArrayList<>(numberOfAccounts);
+     /*   accountsData = new ArrayList<>(numberOfAccounts);
         createAccounts("res/boysNames.txt","res/Test1/createAccTest1.txt");
         createAddFriendsCommand("res/Test1/addFriendsTest1.txt");
         creatCSVfiles("res/Test1/firendsTableTest1.csv");
-
+*/
 
 
     }
