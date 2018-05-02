@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
-    private HashMap<String, ArrayList<SPost>> hashTagsMap;
+    private static HashMap<String, ArrayList<SPost>> hashTagsMap;
 
     public SocialGraph() {
         allTheAccounts = new HashMap<>();
@@ -78,7 +78,7 @@ public class SocialGraph {
     }
 
     public ArrayList<String> getAllAccounts() {
-        String[] names = new String[0];
+        String[] names;
         Set<String> set = allTheAccounts.keySet();
         names = set.toArray(new String[0]);
         return new ArrayList<String>(Arrays.asList(names));
@@ -147,8 +147,8 @@ public class SocialGraph {
         account.addNewPost(post);
     }
 
-    public static ArrayList<SPost> hashTagSearch(String key, HashMap<String,ArrayList<SPost>> hashMap){
-        return hashMap.get(key); ///returns null if arraylist is empty
+    public static ArrayList<SPost> hashTagSearch(String key){
+        return hashTagsMap.get(key); ///returns null if arraylist is empty
     }
 }
 
