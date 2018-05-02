@@ -1,7 +1,12 @@
 package David;
 
+import GraphClasses.SocialGraph;
+
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class TestCasesMaker {
@@ -10,6 +15,7 @@ public class TestCasesMaker {
     private static int maxCommonNumberOfFriends = numberOfAccounts/60 -2;
     private static int maxRareNumberOfFriends = 1000/16;
     private static int maxNumberOfFriendsMade = 0;
+
 
 
 
@@ -36,6 +42,71 @@ public class TestCasesMaker {
 
     }
 
+    private static ArrayList<String> makePosts(String postsFilePath, String hashtagsFilePath) throws IOException {
+        ArrayList<String> posts = new ArrayList<>();
+        FileReader postsReader = new FileReader(postsFilePath);
+        BufferedReader br = new BufferedReader(postsReader);
+
+        for(String line ; (line = br.readLine())!=null;) {
+            posts.add(line);
+
+        }
+        postsReader.close();
+        br.close();
+
+        ArrayList<String> hashTags = new ArrayList<>( );
+
+        FileReader hashTagsReader = new FileReader(hashtagsFilePath);
+        br = new BufferedReader(hashTagsReader);
+        for(String line ; (line = br.readLine())!=null;) {
+            hashTags.add(line);
+
+        }
+        br.close();
+        hashTagsReader.close();
+
+        ArrayList<String> completePosts = new ArrayList<>();
+        Random random = new Random();
+
+        for (String post:
+             posts) {
+            if(random.nextInt(5)>3) {
+                completePosts.add(post + " " + hashTags.get(random.nextInt(hashTags.size())));
+            }
+            else   completePosts.add(post);
+        }
+
+
+
+        return completePosts;
+    }
+
+    private static void createMakePostsCommand(String outputFilePath
+            , SocialGraph graph, ArrayList<String> famousPeople, ArrayList<String> posts) throws IOException, ProjectExceptions.AccountException {
+
+
+        ArrayList<String> allAcounts = graph.getAllAccounts();
+        Random randomGenerator = new Random();
+        FileWriter out = new FileWriter(outputFilePath);
+        for (String post: posts
+             ) {
+            int randomNo = randomGenerator.nextInt(allAcounts.size()*2);
+            String accountName = null;
+            if(randomNo>=allAcounts.size()){
+                accountName = famousPeople.get(randomNo %famousPeople.size());
+            }
+            else {
+                accountName = allAcounts.get(randomNo);
+            }
+            out.write(QueryExecutor.loginCommand +" "+accountName+" "+graph.getAccount(accountName).getPassword()+'\n');
+            out.write(QueryExecutor.makePostCommand+" "+post+'\n');
+            out.write(QueryExecutor.logoutCommand+'\n');
+        }
+
+
+
+        out.close();
+    }
     private static void createAddFriendsCommand(String outputFileName) throws IOException {
 
         Random randomGenerator = new Random();
@@ -105,7 +176,7 @@ public class TestCasesMaker {
         out.close();
     }
 
-    public static void main(String[]args) throws IOException {
+    public static void main(String[]args) throws IOException, ProjectExceptions.AccountException {
      /*   accountsData = new ArrayList<>(numberOfAccounts);
         createAccounts("res/boysNames.txt","res/Test1/createAccTest1.txt");
         createAddFriendsCommand("res/Test1/addFriendsTest1.txt");
@@ -113,8 +184,28 @@ public class TestCasesMaker {
 */
 
 
-    }
+     ArrayList<String> posts = makePosts("res/Tests Data/posts.txt","res/Tests Data/hashTags.txt");
+        System.out.println(posts.size());
+        SocialGraph graph =  new SocialGraph();
+        QueryExecutor.executeQueryFile(graph,"res/Test1/createAccTest1.txt");
+        QueryExecutor.executeQueryFile(graph,"res/Test1/addFriendsTest1.txt");
+        QueryExecutor.executeQueryFile(graph,"res/Test1/makePostsCommandTest1.txt");
+        SaveAndLoadData.SaveInExcel(graph,"res/Test1/");
 
+       /* ArrayList<String> famousPeopleTest1 = new ArrayList<>(Arrays.asList(new String[]{"Dalton", "Tristen", "Zackary",
+                "Alvaro", "Samson", "Jaxton", "Judson", "Steve", "Harrison", "Javier", "Maximus",
+                "Thatcher", "Braxton", "Bruce", "Fabian", "Marco",
+                "Noah", "Walker", "Emory", "Kamren", "Moshe", "Orlando", "Paul",
+                "Shawn", "Skyler", "Sylas", "Bowen", "Brock", "Clark", "Colt", "Damari", "Damon", "Joshua",
+                "Malcolm", "Marlon", "Riaan", "Trent", "Uriel", "Zaire", "Connor", "Derrick", "Duke",
+                "Isaac", "Jadon", "Lawson","Leandro",
+                "Seamus", "Van", "Ayaan", "Boston", "Camilo", "Henry", "Lyric",
+                "Jamir", "Kristian", "Bruno", "Christopher", "Forrest",
+                "Gage", "Kamdyn", "Layton", "Michael", "Milo", "Titus", "Jackson", "Hayden"
+        }));
+
+        createMakePostsCommand("res/Test1/makePostsCommandTest1.txt",graph,famousPeopleTest1,posts);*/
+    }
 
 
 

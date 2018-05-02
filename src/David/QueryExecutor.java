@@ -9,17 +9,17 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class QueryExecutor {
-    private static final String newAccountCommand = "createAccount";
-    private static final String loginCommand = "login";
-    private static final String logoutCommand = "logout";
-    private static final String showMyFriendsCommand = "showMyFriends";
-    private static final String addFriendCommand = "addFriend";
-    private static final String makePostCommand = "post";
-    private static final String loginErrorMsg = "You need to login first";
-    private static final String showPostsCommand = "showPosts";
-    private static final String openPostCommand = "openPost";
-    private static final String makeCommentCommand = "makeComment";
-    private static final String suggestFriendsCommand = "suggestFriends";
+     static final String newAccountCommand = "createAccount";
+     static final String loginCommand = "login";
+     static final String logoutCommand = "logout";
+     static final String showMyFriendsCommand = "showMyFriends";
+     static final String addFriendCommand = "addFriend";
+     static final String makePostCommand = "post";
+     static final String loginErrorMsg = "You need to login first";
+     static final String showPostsCommand = "showPosts";
+     static final String openPostCommand = "openPost";
+     static final String makeCommentCommand = "makeComment";
+     static final String suggestFriendsCommand = "suggestFriends";
 
 
 
@@ -286,7 +286,7 @@ public class QueryExecutor {
     public static void main(String[] args) throws AccountException, IOException {
         SocialGraph graph = new SocialGraph();
         System.out.println(executeQueryFile(graph,"res/randomTesting/randomQueryTesting.txt"));
-        SaveAndLoadData.save(graph,"res/randomTesting/randomTesting.json");
+        SaveAndLoadData.saveInJason(graph,"res/randomTesting/randomTesting.json");
 
     }
 }

@@ -19,12 +19,12 @@ public class Main {
         SocialGraph graph = new SocialGraph();
         graph.addNewAccount("Rameez","1234444");
         graph.addNewAccount("youssef","123");
-        SaveAndLoadData.save(graph,"output");
+        SaveAndLoadData.saveInJason(graph,"output");
 
 
         // loading the output file  in a graph object
 
-        SocialGraph graph2 = SaveAndLoadData.load("output");
+        SocialGraph graph2 = SaveAndLoadData.loadFromJason("output");
         System.out.println(graph2);
 */
 
