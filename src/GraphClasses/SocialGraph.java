@@ -14,7 +14,8 @@ import java.util.Set;
 
 public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
-    private static HashMap<String, ArrayList<SPost>> hashTagsMap;
+    private static HashMap<String, ArrayList<SPost>> hashTagsMap=new HashMap<>();
+
 
     public SocialGraph() {
         allTheAccounts = new HashMap<>();
@@ -145,10 +146,40 @@ public class SocialGraph {
     //hashtag functionality
     public static void  addNewPost(SAccount account,String post){
         account.addNewPost(post);
+        createHashTag(new SPost (post,account));
+
     }
 
     public static ArrayList<SPost> hashTagSearch(String key){
         return hashTagsMap.get(key); ///returns null if arraylist is empty
+    }
+    private static void createHashTag (SPost post){
+        String postContent = post.getPost();
+        int postLength = postContent.length();
+
+        for(int i=0; i<postLength-1; i++){ //dont care if the last char is #
+            if(postContent.charAt(i)=='#'){
+                int spaceIndex = postContent.indexOf(' ',i); //int indexOf(int ch, int fromIndex)
+                String key = new String();
+                if(spaceIndex>0) {
+                    key = postContent.substring(i, spaceIndex); //String substring(int beginIndex, int endIndex)
+                    i = spaceIndex;
+                }
+                else key = postContent.substring(i);
+                addHashTag(key,post);
+
+            }
+        }
+    }
+    private static void addHashTag(String key, SPost post){
+        if(hashTagsMap==null || !hashTagsMap.containsKey(key)) {
+            hashTagsMap.put(key, new ArrayList<>());
+        }
+        if(!hashTagsMap.get(key).contains(post)) {
+            hashTagsMap.get(key).add(post);
+            //System.out.println(key + ": " + post.getPost());
+        }
+
     }
 }
 
