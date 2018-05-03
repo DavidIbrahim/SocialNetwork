@@ -102,7 +102,7 @@ public class QueryExecutor {
         }
         else {
             try {
-                ArrayList<String> suggestedAccounts = currentAccount.getSuggestedFriends(graph,numberOfAccountsToSuggest);
+                ArrayList<String> suggestedAccounts = (ArrayList<String>) currentAccount.getSuggestedFriends(graph,numberOfAccountsToSuggest);
 
                 return "Suggested: "+suggestedAccounts.toString();
 

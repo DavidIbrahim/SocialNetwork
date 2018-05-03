@@ -79,15 +79,14 @@ class SocialGraphTest extends GroovyTestCase {
 
     @Test
     void testHashTagsSearching() {
-        assertEquals(8,SocialGraph.hashTagSearch("#beautiful").size())
-        assertEquals(11,SocialGraph.hashTagSearch("#cute").size())
-        assertEquals(7,SocialGraph.hashTagSearch("#hot").size())
-        assertEquals(5,SocialGraph.hashTagSearch("#goals").size())
-        assertTrue(SocialGraph.hashTagSearch("#bf").contains(" I forgot to work out today. That's 5 years in a row! #bf"))
-        assertTrue(SocialGraph.hashTagSearch("#bf").contains(" If money grew on trees.. Congress would actually care about the environment. #bf"))
-        assertTrue(SocialGraph.hashTagSearch("#omg").contains(" Currently helping my son search for his chocolate that I ate last night. #omg"))
-       }
-
+        assertEquals(8, SocialGraph.hashTagSearch("#beautiful").size())
+        assertEquals(11, SocialGraph.hashTagSearch("#cute").size())
+        assertEquals(7, SocialGraph.hashTagSearch("#hot").size())
+        assertEquals(5, SocialGraph.hashTagSearch("#goals").size())
+        assertTrue(SocialGraph.hashTagSearch("#bf").toString().contains(" I forgot to work out today. That's 5 years in a row! #bf"))
+        assertTrue(SocialGraph.hashTagSearch("#bf").toString().contains(" If money grew on trees.. Congress would actually care about the environment. #bf"))
+        assertTrue(SocialGraph.hashTagSearch("#omg").toString().contains(" Currently helping my son search for his chocolate that I ate last night. #omg"))
+    }
 
     @BeforeClass
     static void setUpTheGraph() {
