@@ -16,6 +16,7 @@ public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
     private static HashMap<String, ArrayList<SPost>> hashTagsMap=new HashMap<>();
 
+
     public SocialGraph() {
         allTheAccounts = new HashMap<>();
     }
@@ -78,7 +79,7 @@ public class SocialGraph {
     }
 
     public ArrayList<String> getAllAccounts() {
-        String[] names = new String[0];
+        String[] names;
         Set<String> set = allTheAccounts.keySet();
         names = set.toArray(new String[0]);
         return new ArrayList<String>(Arrays.asList(names));
@@ -174,11 +175,11 @@ public class SocialGraph {
         if(hashTagsMap==null || !hashTagsMap.containsKey(key)) {
             hashTagsMap.put(key, new ArrayList<>());
         }
-
         if(!hashTagsMap.get(key).contains(post)) {
             hashTagsMap.get(key).add(post);
             //System.out.println(key + ": " + post.getPost());
         }
+
     }
 }
 

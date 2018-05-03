@@ -100,7 +100,7 @@ public class SAccount {
                 '}';
     }
 
-    public ArrayList <String> getSuggestedFriends (SocialGraph All , int numberOfSuggested) throws AccountException, SuggestedFriendsException {
+    public List <String> getSuggestedFriends (SocialGraph All , int numberOfSuggested) throws AccountException, SuggestedFriendsException {
         ArrayList <String > suggestedFriendsNames = new ArrayList<>();
         ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<>();
         HashMap< String, Integer> Detected = new HashMap();
@@ -112,7 +112,7 @@ public class SAccount {
         for(int i=0;i<friends.size();i++){
             q.addAll(All.getAccount(friends.get(i)).getFriends());
         }
-        while ((!q.isEmpty())&&(Detected.size()<numberOfSuggested)){
+        while ((!q.isEmpty())&&Detected.size()<900){
             String currentUser = q.poll();
             if(!friends.contains(currentUser)&&(!this.name.equals(currentUser))){ ///making sure the friend of friend isn't already a friend or the user himself.
                 Detected.put(currentUser,0);
@@ -141,8 +141,18 @@ public class SAccount {
             suggestedFriends.add(s);
         }
         suggestedFriendsNames = sortSuggested(suggestedFriends);
+
     }
-        return suggestedFriendsNames; //// suggested friends will be maximum 10 , it could be less.
+        ArrayList<String> subSuggestedFriendsNames = new ArrayList<>();
+        int range;
+        if(suggestedFriendsNames.size()>10)
+            range=10;
+        else
+            range=suggestedFriendsNames.size();
+        for(int i=0;i<range;i++){
+            subSuggestedFriendsNames.add(suggestedFriendsNames.get(i));
+        }
+        return subSuggestedFriendsNames; //// suggested friends will be maximum 10 , it could be less.
     }
     private ArrayList<String> sortSuggested (ArrayList<SuggestedFriend> S) {
 
