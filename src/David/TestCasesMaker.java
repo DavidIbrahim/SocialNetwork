@@ -1,26 +1,48 @@
 package David;
 
 import GraphClasses.SocialGraph;
+import Rameez.Visualization;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
 public class TestCasesMaker {
-    private static ArrayList<ArrayList<String>>accountsData;
-    private static int numberOfAccounts = 1000;
-    private static int maxCommonNumberOfFriends = numberOfAccounts/60 -2;
-    private static int maxRareNumberOfFriends = 1000/16;
+    private static ArrayList<ArrayList<String>>accountsData = new ArrayList<>();
+    private static int numberOfAccounts ;
+    private static int averageNoOfFriends;
+    private static int minimumFamousPeopleNoOfFriends;
     private static int maxNumberOfFriendsMade = 0;
+    private static int totalNoOfPosts ;
+    private static final String NAMES_FILE = "res/Tests Data/boysNames.txt";
+
+
+    public static SocialGraph  creatTest(String directoryPath, int numberOfAccounts,
+                          int averageNumberOfFriends, int totalNumberOfPosts,int minimumFamousPeopleNoOfFriends) throws IOException, ProjectExceptions.AccountException {
+        TestCasesMaker.numberOfAccounts = numberOfAccounts;
+        TestCasesMaker.averageNoOfFriends=averageNumberOfFriends;
+        TestCasesMaker.totalNoOfPosts = totalNumberOfPosts;
+        TestCasesMaker.minimumFamousPeopleNoOfFriends = minimumFamousPeopleNoOfFriends;
+        createAccounts(directoryPath +"/createAcc.txt");
+        createAddFriendsCommand(directoryPath+"/addFriends.txt");
+        createMakePostsCommand(directoryPath+"/makePosts.txt");
+        creatCSVfiles(directoryPath+"/friendsTable.csv");
+        SocialGraph graph = new SocialGraph();
+        QueryExecutor.executeQueryFile(graph,directoryPath+"/createAcc.txt");
+        QueryExecutor.executeQueryFile(graph,directoryPath+"/addFriends.txt");
+        QueryExecutor.executeQueryFile(graph,directoryPath+"/makePosts.txt");
+        SaveAndLoadData.SaveInExcel(graph,directoryPath);
+        Visualization.visualizeSocialGraph(graph,true);
+
+        return graph;
 
 
 
+    }
 
-    private  static void createAccounts(String accountsFilesNames,String  outputFileName) throws IOException {
-        FileReader accounts = new FileReader(accountsFilesNames);
+
+    private  static void createAccounts(String  outputFileName) throws IOException {
+        FileReader accounts = new FileReader(NAMES_FILE);
         FileWriter out = new FileWriter(outputFileName);
         BufferedReader br = new BufferedReader(accounts);
         Random random = new Random();
@@ -34,6 +56,7 @@ public class TestCasesMaker {
             temp.add("0");
             accountsData.add(temp);
             out.write("createAccount "+line+" "+password+'\n');
+            if(accountsData.size()==numberOfAccounts)break;
         }
 
         out.close();
@@ -49,6 +72,7 @@ public class TestCasesMaker {
 
         for(String line ; (line = br.readLine())!=null;) {
             posts.add(line);
+            if(posts.size()==totalNoOfPosts) break;
 
         }
         postsReader.close();
@@ -74,6 +98,7 @@ public class TestCasesMaker {
                 completePosts.add(post + " " + hashTags.get(random.nextInt(hashTags.size())));
             }
             else   completePosts.add(post);
+
         }
 
 
@@ -81,24 +106,18 @@ public class TestCasesMaker {
         return completePosts;
     }
 
-    private static void createMakePostsCommand(String outputFilePath
-            , SocialGraph graph, ArrayList<String> famousPeople, ArrayList<String> posts) throws IOException, ProjectExceptions.AccountException {
+    private static void createMakePostsCommand(String outputFilePath) throws IOException {
 
+        ArrayList<String> posts = makePosts("res/Tests Data/posts.txt","res/Tests Data/hashTags.txt");
 
-        ArrayList<String> allAcounts = graph.getAllAccounts();
         Random randomGenerator = new Random();
         FileWriter out = new FileWriter(outputFilePath);
         for (String post: posts
              ) {
-            int randomNo = randomGenerator.nextInt(allAcounts.size()*2);
-            String accountName = null;
-            if(randomNo>=allAcounts.size()){
-                accountName = famousPeople.get(randomNo %famousPeople.size());
-            }
-            else {
-                accountName = allAcounts.get(randomNo);
-            }
-            out.write(QueryExecutor.loginCommand +" "+accountName+" "+graph.getAccount(accountName).getPassword()+'\n');
+            int randomNo = randomGenerator.nextInt(numberOfAccounts);
+            String accountName = accountsData.get(randomNo).get(0);
+
+            out.write(QueryExecutor.loginCommand +" "+accountName+" "+ accountsData.get(randomNo).get(1)+"\n");
             out.write(QueryExecutor.makePostCommand+" "+post+'\n');
             out.write(QueryExecutor.logoutCommand+'\n');
         }
@@ -115,15 +134,18 @@ public class TestCasesMaker {
 
             ArrayList<Integer> indicesOfAddedFriends = new ArrayList<>();
 
-            int numberOfFriends = randomGenerator.nextInt(maxCommonNumberOfFriends+1);
-            if(numberOfFriends> maxCommonNumberOfFriends-2 &&randomGenerator.nextInt()>maxCommonNumberOfFriends-5){
-                numberOfFriends = maxRareNumberOfFriends;
+            int numberOfFriends;
+            if(randomGenerator.nextInt(100)>= 90){  // 10 % are famous
+                numberOfFriends = minimumFamousPeopleNoOfFriends;
+            }
+            else{
+                numberOfFriends = (int) (randomGenerator.nextInt(averageNoOfFriends +1)/1.5);
             }
             indicesOfAddedFriends.add(i);
             ArrayList<String> currentAccount = accountsData.get(i);
             out.write("login "+currentAccount.get(0)+" "+currentAccount.get(1)+"\n");
 
-            while (numberOfFriends>indicesOfAddedFriends.size()-1){
+            while (numberOfFriends>indicesOfAddedFriends.size()-1&& currentAccount.size()<numberOfAccounts-3){
                 int randomFriendIndex = randomGenerator.nextInt(numberOfAccounts);
                 ArrayList<String> randomFriend = accountsData.get(randomFriendIndex);
                 if(!indicesOfAddedFriends.contains(randomFriendIndex)){
@@ -177,34 +199,8 @@ public class TestCasesMaker {
     }
 
     public static void main(String[]args) throws IOException, ProjectExceptions.AccountException {
-     /*   accountsData = new ArrayList<>(numberOfAccounts);
-        createAccounts("res/boysNames.txt","res/Test1/createAccTest1.txt");
-        createAddFriendsCommand("res/Test1/addFriendsTest1.txt");
-        creatCSVfiles("res/Test1/firendsTableTest1.csv");
-*/
 
-
-     ArrayList<String> posts = makePosts("res/Tests Data/posts.txt","res/Tests Data/hashTags.txt");
-        System.out.println(posts.size());
-        SocialGraph graph =  new SocialGraph();
-        QueryExecutor.executeQueryFile(graph,"res/Test1/createAccTest1.txt");
-        QueryExecutor.executeQueryFile(graph,"res/Test1/addFriendsTest1.txt");
-        QueryExecutor.executeQueryFile(graph,"res/Test1/makePostsCommandTest1.txt");
-        SaveAndLoadData.SaveInExcel(graph,"res/Test1/");
-
-       /* ArrayList<String> famousPeopleTest1 = new ArrayList<>(Arrays.asList(new String[]{"Dalton", "Tristen", "Zackary",
-                "Alvaro", "Samson", "Jaxton", "Judson", "Steve", "Harrison", "Javier", "Maximus",
-                "Thatcher", "Braxton", "Bruce", "Fabian", "Marco",
-                "Noah", "Walker", "Emory", "Kamren", "Moshe", "Orlando", "Paul",
-                "Shawn", "Skyler", "Sylas", "Bowen", "Brock", "Clark", "Colt", "Damari", "Damon", "Joshua",
-                "Malcolm", "Marlon", "Riaan", "Trent", "Uriel", "Zaire", "Connor", "Derrick", "Duke",
-                "Isaac", "Jadon", "Lawson","Leandro",
-                "Seamus", "Van", "Ayaan", "Boston", "Camilo", "Henry", "Lyric",
-                "Jamir", "Kristian", "Bruno", "Christopher", "Forrest",
-                "Gage", "Kamdyn", "Layton", "Michael", "Milo", "Titus", "Jackson", "Hayden"
-        }));
-
-        createMakePostsCommand("res/Test1/makePostsCommandTest1.txt",graph,famousPeopleTest1,posts);*/
+        creatTest("res/Test2",20,2  ,10,5);
     }
 
 

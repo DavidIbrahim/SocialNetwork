@@ -17,8 +17,23 @@ import edu.uci.ics.jung.visualization.renderers.Renderer;
 import org.apache.commons.collections15.Transformer;
 
 public class Visualization {
-    public void visualizeSocialGraph (SocialGraph graph)throws ProjectExceptions.AccountException {
 
+
+    public static void  visualizeSocialGraph(SocialGraph graph)throws ProjectExceptions.AccountException {
+        visualizeSocialGraph(graph, false);
+    }
+
+    public static void  visualizeSocialGraph (SocialGraph graph, boolean showNames )throws ProjectExceptions.AccountException {
+        int width,height;
+
+        if(showNames){
+            width=40;
+            height=40;
+        }
+        else {
+            width=20;
+            height=20;
+        }
         Graph<String, Integer> g = new SparseGraph<>();
         Layout<String, Integer> layout = new FRLayout2<>(g); // sets the layout of the drawn graph
         layout.setSize(new Dimension(1000,700));// sets the initial size of the space
@@ -38,17 +53,19 @@ public class Visualization {
         vv.setPreferredSize(new Dimension(1000,1000)); //Sets the viewing area size
         Transformer<String,Paint> vertexPaint = i -> Color.GREEN;
         Transformer<String,Shape> vertexSize = s -> {
-            Ellipse2D circle = new Ellipse2D.Double(-15, -15, 20, 15);
+                Ellipse2D circle = new Ellipse2D.Double(-15, -15, width, height);
             return circle;
         };
         Transformer<Integer, Paint> edgePaint = i -> Color.GRAY;
-
-
-      //  vv.getRenderContext().setVertexShapeTransformer(vertexSize);
+        if(showNames) {
+            vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
+            vv.getRenderContext().setVertexShapeTransformer(vertexSize);
+            vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+        }
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-        // vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+
         // vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
-        //  vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
+
         // vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
         // vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
         JFrame frame = new JFrame("Social Network");
