@@ -107,7 +107,14 @@ public class QueryExecutor {
 
         else if (query.substring(0, influencingAccountsCommand.length()).equals(influencingAccountsCommand)) {
 
-            reply=findInfluencingAccounts(10,graph);
+            if(query.trim().length()==influencingAccountsCommand.length()){
+                reply=findInfluencingAccounts(10,graph);
+            }
+            else {
+                String noOfFriendsStr = query.substring(influencingAccountsCommand.length() + 1);
+                reply = findInfluencingAccounts(Integer.parseInt(noOfFriendsStr.trim()),graph);
+            }
+
         }
         return reply;
     }
