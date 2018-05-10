@@ -20,6 +20,9 @@ public class QueryExecutor {
      static final String openPostCommand = "openPost";
      static final String makeCommentCommand = "makeComment";
      static final String suggestFriendsCommand = "suggestFriends";
+     static final String followAccountCommand="followAccount";
+    static final String showFollowedAccountsCommand = "showFollowedAccounts";
+    static final String influencingAccountsCommand = "findInfluencingAccounts";
 
 
 
@@ -59,6 +62,11 @@ public class QueryExecutor {
             reply = showFriends();
         }
 
+        else if(query.contains(showFollowedAccountsCommand))
+        {
+            reply=showFollowedPeople();
+        }
+
 
 
 
@@ -79,7 +87,10 @@ public class QueryExecutor {
             reply = addFriend(graph, query.substring(addFriendCommand.length() + 1));
         }
         //make comment
-
+        else if(query.substring(0,followAccountCommand.length()).equals(followAccountCommand))
+        {
+            reply=followAccount(graph,query.substring(followAccountCommand.length()+1));
+        }
         else if (query.substring(0, makeCommentCommand.length()).equals(makeCommentCommand)) {
             reply = makeComment(query.substring(makeCommentCommand.length() + 1));
         }
@@ -93,8 +104,14 @@ public class QueryExecutor {
                 reply = suggestFriends(Integer.parseInt(noOfFriendsStr.trim()),graph);
             }
         }
+
+        else if (query.substring(0, influencingAccountsCommand.length()).equals(influencingAccountsCommand)) {
+
+            reply=findInfluencingAccounts(10,graph);
+        }
         return reply;
     }
+
 
     private static String suggestFriends(int numberOfAccountsToSuggest,SocialGraph graph) throws AccountException {
         if(currentAccount==null){
@@ -111,6 +128,10 @@ public class QueryExecutor {
             }
         }
 
+    }
+    private static String findInfluencingAccounts(int numOfInfluencingAccounts,SocialGraph graph)
+    {
+        return graph.findInfluencingPeople(numOfInfluencingAccounts).toString();
     }
 
 
@@ -207,6 +228,25 @@ public class QueryExecutor {
         return reply;
     }
 
+    private static String followAccount(SocialGraph graph,String substring)
+    {
+        String reply = "";
+        if (currentAccount == null)
+            reply = loginErrorMsg;
+        else {
+
+            try {
+
+                currentAccount.followSomeone(graph.getAccount(substring));
+            } catch (AccountException e) {
+                reply = "Error: "+e.getMessage();
+            } catch (FollowSomeoneException e) {
+                reply = "Error: "+substring+ " is "+e.getMessage();
+            }
+        }
+        return reply;
+    }
+
     private static String showFriends() {
         String reply ;
         if (currentAccount == null)
@@ -217,6 +257,16 @@ public class QueryExecutor {
         return reply;
     }
 
+    private static String showFollowedPeople()
+    {
+        String reply ;
+        if (currentAccount == null)
+            reply = loginErrorMsg;
+        else {
+            reply ="Followed People: "+ currentAccount.getFollowedPeople().toString();
+        }
+        return reply;
+    }
     private static String loginQuery(SocialGraph graph, String substring) {
         String[] namePass = substring.split(" ");
         String reply = "";

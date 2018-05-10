@@ -2,6 +2,7 @@ package GraphClasses;
 
 import David.ProjectExceptions;
 import David.ProjectExceptions.*;
+import javafx.util.Pair;
 
 
 import java.util.*;
@@ -86,7 +87,8 @@ public class SocialGraph {
     }
 
     public static HashMap sortByValues(HashMap map) {
-        List list = new LinkedList(map.entrySet());
+       // List list = new LinkedList(map.entrySet());
+        ArrayList<Pair<String,Double>> list= new ArrayList(map.entrySet());
         // Defined Custom Comparator here
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {

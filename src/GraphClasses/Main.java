@@ -7,7 +7,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
+import static David.QueryExecutor.executeQuery;
 import static David.QueryExecutor.executeQueryFile;
 
 public class Main {
@@ -71,7 +73,7 @@ public class Main {
 //        map.put("rizk",1.0);
 //        map.put("ahmed",-1.0);
 //        map.put("d",50.2);
-//        /*
+//
 //        for(Map.Entry me:map.entrySet())
 //        {
 //            System.out.println("key="+me.getKey().toString()+" value="+(Double)me.getValue());
@@ -81,7 +83,7 @@ public class Main {
 //        {
 //            System.out.println("key="+me.getKey().toString()+" value="+(Double)me.getValue());
 //        }
-//*/
+
 //        talaatGraph.addNewAccount("Mina","123");
 //        talaatGraph.addNewAccount("Talaat","123");
 //        talaatGraph.addNewAccount("David","123");
@@ -97,6 +99,13 @@ public class Main {
 //        for(int i=0;i<influencingPeople.size();i++)
 //        {
 //            System.out.println(influencingPeople.get(i)+" influencing value="+talaatGraph.getAccount(influencingPeople.get(i)).getAccountInfluencingValue());
+//        }
+//        while(true)
+//        {
+//            Scanner scanner = new Scanner(System.in);
+//            String s = scanner.nextLine();
+//
+//            System.out.println(executeQuery(talaatGraph,s));
 //        }
 
         /*-------------------Talaat Test Ends-----------------------------------------------*/

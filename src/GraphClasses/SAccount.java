@@ -30,7 +30,7 @@ public class SAccount {
         return posts;
     }
 
-
+    public ArrayList<String> getFollowedPeople(){return follwedAccounts;}
 
     protected SAccount(String name, String password) {
         this.name = name;
