@@ -4,9 +4,11 @@ import GraphClasses.SAccount;
 import GraphClasses.SPost;
 import GraphClasses.SocialGraph;
 import David.ProjectExceptions.*;
+import Rameez.Visualization;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class QueryExecutor {
      static final String newAccountCommand = "createAccount";
@@ -21,21 +23,36 @@ public class QueryExecutor {
      static final String makeCommentCommand = "makeComment";
      static final String suggestFriendsCommand = "suggestFriends";
      static final String followAccountCommand="followAccount";
-    static final String showFollowedAccountsCommand = "showFollowedAccounts";
-    static final String influencingAccountsCommand = "findInfluencingAccounts";
-
+     static final String showFollowedAccountsCommand = "showFollowedAccounts";
+     static final String influencingAccountsCommand = "findInfluencingAccounts";
+     static final String EXITCOMMAND = "exit";  // it saves data of the graph in currentGraphData directory
+     static final String loadFromFileCommand = "loadFile";
+     static final String visualizeGraph = "visualizeGraph";
 
 
     private static SAccount currentAccount;
     private static ArrayList<SPost> currentPosts;
     private static SPost currentPost;
 
+    private static boolean exit = false;
 
-    public static String executeQuery(SocialGraph graph, String query) throws AccountException {
+
+    public static String executeQuery(SocialGraph graph, String query) throws AccountException, IOException {
         String reply = "";
         //create Account
         if (query.contains(newAccountCommand)) {
             reply = addAccQuery(graph, query.substring(newAccountCommand.length() + 1));
+
+        }
+        else if (query.equals(visualizeGraph)) {
+            Visualization.visualizeSocialGraph(graph, true);
+        }
+
+
+        else if (query.equals(EXITCOMMAND)){
+            SaveAndLoadData.saveInJason(graph,"res/CurrentGraphData/savedData.json");
+            SaveAndLoadData.SaveInExcel(graph,"res/CurrentGraphData");
+            exit = true;
         }
 
 
@@ -69,7 +86,9 @@ public class QueryExecutor {
 
 
 
-
+        else if(query.substring(0,loadFromFileCommand.length()).equals(loadFromFileCommand)){
+            reply = executeQueryFile(graph,query.substring(loadFromFileCommand.length()+1));
+        }
         //make post
         else if (query.substring(0, makePostCommand.length()).equals(makePostCommand)) {
             reply = makePost(query.substring(makePostCommand.length() + 1));
@@ -315,7 +334,7 @@ public class QueryExecutor {
         return true;
     }
 
-    public static String executeQueryFile  (SocialGraph graph, String  queryFile) throws AccountException {
+     static String executeQueryFile  (SocialGraph graph, String  queryFile) throws AccountException {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             FileReader randomTesting = new FileReader(queryFile);
@@ -341,9 +360,20 @@ public class QueryExecutor {
         return stringBuilder.toString();
     }
     public static void main(String[] args) throws AccountException, IOException {
-        SocialGraph graph = new SocialGraph();
-        System.out.println(executeQueryFile(graph,"res/randomTesting/randomQueryTesting.txt"));
-        SaveAndLoadData.saveInJason(graph,"res/randomTesting/randomTesting.json");
+        SocialGraph graph = null;
+        try {
+            graph = SaveAndLoadData.loadFromJason("res/CurrentGraphData/savedData.json");
+        } catch (FileNotFoundException e) {
+        }
+
+
+        if(graph == null) graph = new SocialGraph();
+        while (!exit) {
+            String reply = executeQuery(graph, new Scanner(System.in).nextLine());
+            if(reply.length()>1)
+            System.out.println(reply);
+
+        }
 
     }
 }

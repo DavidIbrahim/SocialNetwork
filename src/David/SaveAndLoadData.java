@@ -40,7 +40,7 @@ public class SaveAndLoadData {
     public static void SaveInExcel(SocialGraph graph,String fileDirectory) throws IOException, ProjectExceptions.AccountException {
         FileWriter out = new FileWriter(fileDirectory+"/AccountsData.csv");
         StringBuilder sb = new StringBuilder();
-        sb.append("Name,PassWord,Number of Friends,NoOfPosts");
+        sb.append("Name,PassWord,Number of Friends,NoOfPosts,Influencing Value");
         sb.append("\n");
 
             for (String accountName: graph.getAllAccounts()
@@ -49,6 +49,7 @@ public class SaveAndLoadData {
                 sb.append(graph.getAccount(accountName).getPassword()+",");
                 sb.append(graph.getAccount(accountName).getFriends().size()+",");
                 sb.append(graph.getAccount(accountName).getPosts().size()+",");
+                sb.append(graph.getAccount(accountName).getAccountInfluencingValue()+",");
                 sb.append("\n");
             }
 

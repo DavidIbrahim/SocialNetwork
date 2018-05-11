@@ -200,7 +200,7 @@ public class TestCasesMaker {
 
     public static void main(String[]args) throws IOException, ProjectExceptions.AccountException {
 
-        creatTest("res/Test2",20,2  ,10,5);
+        creatTest("res/Test3",30,10  ,600,5);
     }
 
 

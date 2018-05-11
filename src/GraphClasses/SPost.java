@@ -7,7 +7,7 @@ public class SPost {
     private String postOwner;
     private ArrayList<String> likes;
     private ArrayList<SComment> comments;
-    SPost(String post, SAccount postOwner) {
+    public SPost(String post, SAccount postOwner) {
         this.post = post;
 
         this.postOwner = postOwner.getName();

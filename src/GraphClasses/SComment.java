@@ -1,6 +1,12 @@
 package GraphClasses;
 
 public class SComment {
+
+
+    private String commentMaker;
+    private String comment;
+
+
     public String getCommentMaker() {
         return commentMaker;
     }
@@ -9,11 +15,11 @@ public class SComment {
         return comment;
     }
 
-    private String commentMaker;
-    private String comment;
 
     public SComment(SAccount commentMaker, String comment) {
         this.commentMaker = commentMaker.getName();
         this.comment = comment;
     }
+
+
 }

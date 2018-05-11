@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static David.QueryExecutor.executeQuery;
-import static David.QueryExecutor.executeQueryFile;
 
 public class Main {
 
@@ -34,10 +32,9 @@ public class Main {
 
 
        SocialGraph graph = new SocialGraph();
-        QueryExecutor.executeQueryFile(graph,"res/Test1/createAccTest1.txt");
-        QueryExecutor.executeQueryFile(graph,"res/Test1/addFriendsTest1.txt");
+        QueryExecutor.executeQuery(graph,"loadFile res/Test1/createAccTest1.txt");
+        QueryExecutor.executeQuery(graph,"loadFile res/Test1/addFriendsTest1.txt");
         System.out.println("Number of accounts in the graph = "+graph.getNumberOfAccounts());
-        System.out.println(QueryExecutor.executeQueryFile(graph,"res/Test1/randomTest1.txt"));
 
 
 
