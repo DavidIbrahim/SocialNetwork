@@ -1,0 +1,3 @@
+loadFile res/Test2/createAcc.txt
+loadFile res/Test2/addFriends.txt
+loadFile res/Test2/makePosts.txt
