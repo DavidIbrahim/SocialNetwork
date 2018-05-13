@@ -9,6 +9,8 @@ import David.ProjectExceptions.AccountException;
 
 import java.util.*;
 
+import static David.ProjectExceptions.MyExceptionCodes.NO_PATH_FOUND;
+
 public class SAccount {
 
     private String name;
@@ -167,6 +169,43 @@ public class SAccount {
         }
             return sortedSuggested;
         }
+
+
+     public ArrayList<String> getShortestPath(SocialGraph All , String destination) throws AccountException , ProjectExceptions.ShortestPathException{
+         ArrayList<String> path = new ArrayList<>();
+         Queue <String> q = new LinkedList<>();
+         HashMap< String, Integer> distance= new HashMap();
+         HashMap <String,String> parent = new HashMap<>();
+         q.add(this.name);
+         distance.put(this.name,0);
+         boolean found = false;
+         while(!q.isEmpty()&& found==false){
+             String currentUser = q.poll();
+             for(int i=0;i<All.getAccount(currentUser).getFriends().size();i++){
+                 String friend = All.getAccount(currentUser).getFriends().get(i);
+                 if(!distance.containsKey(friend)){
+                     parent.put(friend,currentUser);
+                     distance.put(friend,distance.get(currentUser)+1);
+                     q.add(friend);
+                 }
+                  if (friend.equals(destination)){
+                     String pathNode = destination;
+                     path.add(pathNode);
+                     while (!pathNode.equals(this.name)){
+                        pathNode = parent.get(pathNode);
+                        path.add(pathNode);
+                     }
+                     found = true;
+                 }
+             }
+         }
+         if(path.size()==0){
+             throw new ProjectExceptions.ShortestPathException(MyExceptionCodes.NO_PATH_FOUND);
+         }
+         else
+             return path;
+
+     }
 
 
 
