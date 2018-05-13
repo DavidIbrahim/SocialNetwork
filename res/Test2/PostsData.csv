@@ -1,15 +1,15 @@
 Post,PostOwner,Hashtag,No Of Comments,No Of likes
-War doesn't determine who's right—it determines who's left. #bf,Lucas,#bf,0,00
-A train station is where the train stops. A bus station is where the bus stops. On my desk.. I have a work station...,Daniel,,0,00
-If you think things can't get worse.. it's probably only because you lack sufficient imagination.,Jackson,,0,00
-You can't be late until you show up.,Noah,,0,00
-Books have knowledge.. knowledge is power.. power corrupts.. corruption is a crime.. and crime doesn't pay. So if you keep reading.. you'll go broke.,Liam,,0,00
-I once prayed to God for a bike.. but quickly found out He didn't work that way—so I stole a bike and prayed for His forgiveness.,Elijah,,0,00
-Sarcasm helps keep people from understanding you're saying what you really think of them.,Logan,,0,00
-Parents spend the first part of our lives teaching us to walk and talk and the rest of it telling us to sit down and shut up.,Mason,,0,00
-Expecting the world to treat you fairly because you are good is like expecting the bull not to charge because you are a vegetarian.,Michael,,0,00
-Never interrupt your opponent while he's making a mistake.,Jayden,,0,00
+Parents spend the first part of our lives teaching us to walk and talk and the rest of it telling us to sit down and shut up.,Aiden,,0,00
+I once prayed to God for a bike.. but quickly found out He didn't work that way—so I stole a bike and prayed for His forgiveness.,Alexander,,0,00
+Expecting the world to treat you fairly because you are good is like expecting the bull not to charge because you are a vegetarian.,Alexander,,0,00
+Sarcasm helps keep people from understanding you're saying what you really think of them.,James,,0,00
+War doesn't determine who's right—it determines who's left.,Benjamin,,0,00
+Never interrupt your opponent while he's making a mistake.,Daniel,,0,00
+If you think things can't get worse.. it's probably only because you lack sufficient imagination.,Daniel,,0,00
+A train station is where the train stops. A bus station is where the bus stops. On my desk.. I have a work station...,Elijah,,0,00
+You can't be late until you show up.,Michael,,0,00
+Books have knowledge.. knowledge is power.. power corrupts.. corruption is a crime.. and crime doesn't pay. So if you keep reading.. you'll go broke. #love,Matthew,#love,0,00
 
 
 Hash Tag,Number Of Repetations
-#bf,"=COUNTIF(C2:c11,""#bf"")"
+#love,"=COUNTIF(C2:c11,""#love"")"

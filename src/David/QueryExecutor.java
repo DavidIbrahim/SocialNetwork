@@ -29,6 +29,7 @@ public class QueryExecutor {
      static final String loadFromFileCommand = "loadFile";
      static final String visualizeGraphCommand = "visualizeGraph";
      static final String makeLikeCommand ="likePost";
+     static final String searchPostsCommand = "searchPosts";
 
 
 
@@ -102,10 +103,12 @@ public class QueryExecutor {
         }
         //make post
         else if (query.substring(0, makePostCommand.length()).equals(makePostCommand)) {
-            reply = makePost(query.substring(makePostCommand.length() + 1));
+            reply = makePost(graph,query.substring(makePostCommand.length() + 1));
         }
 
-
+        else if (query.substring(0, searchPostsCommand.length()).equals(searchPostsCommand)) {
+            reply = searchPostsQuery(graph, query.substring(searchPostsCommand.length() + 1));
+        }
 
         else if (query.substring(0, showPostsCommand.length()).equals(showPostsCommand)) {
             reply = showPosts(graph, query);
@@ -198,6 +201,23 @@ public class QueryExecutor {
 
     }
 
+    private static String searchPostsQuery(SocialGraph graph,String query){
+        if(query.charAt(0)!='#') query = "#" +query;
+        currentPosts = graph.hashTagSearch(query);
+        if(currentPosts == null) return "There's No Posts with this hashTag";
+        StringBuilder stringBuilder = new StringBuilder();
+        int counter = 1;
+        for (SPost post :
+               currentPosts) {
+            stringBuilder.append(counter+"- "+post.getPost()+'\n');
+            counter++;
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+
+        return stringBuilder.toString();
+
+    }
+
 
     private static String showPosts(SocialGraph graph, String query) {
 
@@ -240,11 +260,11 @@ public class QueryExecutor {
         }
     }
 
-    private static String makePost(String substring) {
+    private static String makePost(SocialGraph graph,String substring) {
         if (currentAccount == null) {
             return loginErrorMsg;
         } else {
-            SocialGraph.addNewPost(currentAccount,substring);
+            graph.addNewPost(currentAccount,substring);
             return "";
         }
     }

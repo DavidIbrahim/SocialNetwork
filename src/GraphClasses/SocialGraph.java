@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class SocialGraph {
     private HashMap<String, SAccount> allTheAccounts;
-    private static HashMap<String, ArrayList<SPost>> hashTagsMap=new HashMap<>();
+    private  HashMap<String, ArrayList<SPost>> hashTagsMap=new HashMap<>();
 
 
     public SocialGraph() {
@@ -146,16 +146,16 @@ public class SocialGraph {
 
 
     //hashtag functionality
-    public static void  addNewPost(SAccount account,String post){
+    public  void  addNewPost(SAccount account,String post){
         account.addNewPost(post);
         createHashTag(new SPost (post,account));
 
     }
 
-    public static ArrayList<SPost> hashTagSearch(String key){
+    public  ArrayList<SPost> hashTagSearch(String key){
         return hashTagsMap.get(key); ///returns null if arraylist is empty
     }
-    private static void createHashTag (SPost post){
+    private  void createHashTag (SPost post){
         String postContent = post.getPost();
         int postLength = postContent.length();
 
@@ -173,7 +173,7 @@ public class SocialGraph {
             }
         }
     }
-    private static void addHashTag(String key, SPost post){
+    private  void addHashTag(String key, SPost post){
         if(hashTagsMap==null || !hashTagsMap.containsKey(key)) {
             hashTagsMap.put(key, new ArrayList<>());
         }
