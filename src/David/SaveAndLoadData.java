@@ -87,7 +87,6 @@ public class SaveAndLoadData {
                     sb.append(",");
                 }
                 sb.append(post.getComments().size()+",");
-                sb.append(post.getLikes().size());
                 sb.append(post.getLikes().size()+"\n");
 
             }

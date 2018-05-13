@@ -38,10 +38,12 @@ public class SPost {
     @Override
     public String toString() {
        StringBuilder sb = new StringBuilder();
-       sb.append(" "+postOwner+": "+post );
+       sb.append(" "+postOwner+": "+"\""+post +"\"\n");
+       sb.append(" "+likes.size()+" likes");
+
         for (SComment comment:
              comments) {
-            sb.append('\n'+ "      "+comment.getCommentMaker()+": "+comment.getComment());
+            sb.append('\n'+ "      "+comment.getCommentMaker()+": \""+comment.getComment()+"\"");
         }
         return sb.toString();
     }
