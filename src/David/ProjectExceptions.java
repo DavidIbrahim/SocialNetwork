@@ -26,6 +26,13 @@ public class ProjectExceptions {
           super(code.getMsg());
       }
   }
+    public static class ShortestPathException extends Exception {
+
+        public ShortestPathException(MyExceptionCodes code) {
+
+            super(code.getMsg());
+        }
+    }
 
     public static class FollowSomeoneException extends Exception {
         public FollowSomeoneException(MyExceptionCodes code) {
@@ -43,7 +50,10 @@ public class ProjectExceptions {
 
         ALREADY_FOLLWED(4,"already follwed"),
 
-        NO_SUGGESTED_FRIENDS(5,"there's no Accounts to suggest");
+        NO_SUGGESTED_FRIENDS(5,"there's no Accounts to suggest"),
+        NO_PATH_FOUND(6,"there's no path between these two users");
+
+
 
 
         private final int id;
