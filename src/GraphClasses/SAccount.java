@@ -106,6 +106,7 @@ public class SAccount {
         ArrayList <String > suggestedFriendsNames = new ArrayList<>();
         ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<>();
         HashMap< String, Integer> Detected = new HashMap();
+        HashSet <String> visited = new HashSet<>();
         Queue <String> q = new LinkedList<>();
         if(this.getFriends().size()==(All.getNumberOfAccounts()-1)){
             throw new SuggestedFriendsException(MyExceptionCodes.NO_SUGGESTED_FRIENDS); // user is already friend with all graph.
@@ -113,8 +114,9 @@ public class SAccount {
         /////////////////////Adding All friends of friends to queue q.
         for(int i=0;i<friends.size();i++){
             q.addAll(All.getAccount(friends.get(i)).getFriends());
+            visited.addAll(All.getAccount(friends.get(i)).getFriends());
         }
-        while ((!q.isEmpty())&&Detected.size()<900){
+        while ((!q.isEmpty())){
             String currentUser = q.poll();
             if(!friends.contains(currentUser)&&(!this.name.equals(currentUser))){ ///making sure the friend of friend isn't already a friend or the user himself.
                 Detected.put(currentUser,0);
@@ -124,7 +126,10 @@ public class SAccount {
                         Detected.put(currentUser,Detected.get(currentUser)+1); //// incrementing mutual friends for current user.
                     }
                     else {
-                        q.add(friendOfCurrentUser);
+                        if(!visited.contains(friendOfCurrentUser)) {
+                            q.add(friendOfCurrentUser);
+                            visited.add(friendOfCurrentUser);
+                        }
                     }
                 }
             }
@@ -147,8 +152,8 @@ public class SAccount {
     }
         ArrayList<String> subSuggestedFriendsNames = new ArrayList<>();
         int range;
-        if(suggestedFriendsNames.size()>10)
-            range=10;
+        if(suggestedFriendsNames.size()>numberOfSuggested)
+            range=numberOfSuggested;
         else
             range=suggestedFriendsNames.size();
         for(int i=0;i<range;i++){
