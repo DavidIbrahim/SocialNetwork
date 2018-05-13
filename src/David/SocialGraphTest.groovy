@@ -1,14 +1,12 @@
 package David
 
-import GraphClasses.SAccount
+
 import GraphClasses.SocialGraph
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import  java.util.ArrayList
 
 
 @RunWith(JUnit4.class)

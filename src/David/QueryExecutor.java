@@ -25,9 +25,11 @@ public class QueryExecutor {
      static final String followAccountCommand="followAccount";
      static final String showFollowedAccountsCommand = "showFollowedAccounts";
      static final String influencingAccountsCommand = "findInfluencingAccounts";
-     static final String EXITCOMMAND = "exit";  // it saves data of the graph in currentGraphData directory
+     static final String exitCommand = "exit";  // it saves data of the graph in currentGraphData directory
      static final String loadFromFileCommand = "loadFile";
-     static final String visualizeGraph = "visualizeGraph";
+     static final String visualizeGraphCommand = "visualizeGraph";
+     static final String makeLikeCommand ="likePost";
+
 
 
     private static SAccount currentAccount;
@@ -42,14 +44,23 @@ public class QueryExecutor {
         //create Account
         if (query.contains(newAccountCommand)) {
             reply = addAccQuery(graph, query.substring(newAccountCommand.length() + 1));
+            currentPosts=null;
+            currentPost = null;
 
         }
-        else if (query.equals(visualizeGraph)) {
+
+        else if (query.equals(visualizeGraphCommand)) {
             Visualization.visualizeSocialGraph(graph, true);
         }
 
+        else if (query.equals(makeLikeCommand)) {
+            if(currentPost == null)
+                return "Error : you need to open Post first";
+            currentPost.addLike(currentAccount);
+        }
 
-        else if (query.equals(EXITCOMMAND)){
+
+        else if (query.equals(exitCommand)){
             SaveAndLoadData.saveInJason(graph,"res/CurrentGraphData/savedData.json");
             SaveAndLoadData.SaveInExcel(graph,"res/CurrentGraphData");
             exit = true;
@@ -164,7 +175,7 @@ public class QueryExecutor {
     private static String openPost(SocialGraph graph, String substring) {
         if(isNumeric(substring)){
             int postNumber = Integer.parseInt(substring);
-            if(postNumber<currentPosts.size()) {
+            if(postNumber<=     currentPosts.size()) {
                 currentPost = currentPosts.get(postNumber - 1);
                 return currentPost.toString();
             }
@@ -190,6 +201,7 @@ public class QueryExecutor {
 
     private static String showPosts(SocialGraph graph, String query) {
 
+        currentPost = null;
         if (currentAccount == null) return loginErrorMsg;
         else {
             SAccount account;
@@ -275,6 +287,8 @@ public class QueryExecutor {
 
     private static String showFriends() {
         String reply ;
+        currentPost = null;
+        currentPosts = null;
         if (currentAccount == null)
             reply = loginErrorMsg;
         else {
@@ -285,6 +299,7 @@ public class QueryExecutor {
 
     private static String showFollowedPeople()
     {
+        currentPost = null;
         String reply ;
         if (currentAccount == null)
             reply = loginErrorMsg;
@@ -369,9 +384,15 @@ public class QueryExecutor {
 
         if(graph == null) graph = new SocialGraph();
         while (!exit) {
-            String reply = executeQuery(graph, new Scanner(System.in).nextLine());
-            if(reply.length()>1)
-            System.out.println(reply);
+            try {
+                String reply = executeQuery(graph, new Scanner(System.in).nextLine());
+                if(reply.length()>1)
+                    System.out.println(reply);
+
+            }
+            catch(Exception e){
+                System.out.println("Error : wrong command");
+            }
 
         }
 
