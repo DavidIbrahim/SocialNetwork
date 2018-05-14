@@ -23,7 +23,7 @@ public class Visualization {
         Layout<String, Integer> layout = new FRLayout2<>(g); // sets the layout of the drawn graph
         layout.setSize(new Dimension(1000, 700));// sets the initial size of the space
         ArrayList<String> users = new ArrayList<>(graph.getAllAccounts());
-        int totalNumEdges = 0;
+        int totalNumEdges = 1;
         for (int i = 0; i < users.size(); i++) {
             ArrayList<String> Friends = new ArrayList<>(graph.getAccount(users.get(i)).getFriends());
             int numberOfEdges = Friends.size();
@@ -37,7 +37,7 @@ public class Visualization {
                 }
                 else
                     g.addEdge(totalNumEdges, users.get(i), Friends.get(j));
-                totalNumEdges = g.getEdgeCount();
+                totalNumEdges = g.getEdgeCount()+1;
 
             }
         }
