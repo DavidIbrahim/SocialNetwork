@@ -131,7 +131,7 @@ public class Visualization {
 
         vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
         // vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
-        JFrame frame = new JFrame("Social Network");
+        JFrame frame = new JFrame("ShortestPath");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(vv);
         frame.pack();

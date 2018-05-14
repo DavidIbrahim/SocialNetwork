@@ -208,7 +208,8 @@ public class SAccount {
              throw new ProjectExceptions.ShortestPathException(MyExceptionCodes.NO_PATH_FOUND);
          }
          else
-             return path;
+              Collections.reverse(path);
+         return path;
 
      }
 

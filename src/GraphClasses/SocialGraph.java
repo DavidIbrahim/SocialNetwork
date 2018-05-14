@@ -50,6 +50,10 @@ public class SocialGraph {
 
     }
 
+    public boolean containsAccount(String name){
+        return allTheAccounts.containsKey(name);
+    }
+
 
     public SAccount getAccount(String name) throws AccountException {
 

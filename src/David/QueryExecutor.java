@@ -30,6 +30,7 @@ public class QueryExecutor {
      static final String visualizeGraphCommand = "visualizeGraph";
      static final String makeLikeCommand ="likePost";
      static final String searchPostsCommand = "searchPosts";
+     static final String shortestPathCommand = "pathTo";
 
 
 
@@ -54,6 +55,8 @@ public class QueryExecutor {
             Visualization.visualizeSocialGraph(graph, true);
         }
 
+
+
         else if (query.equals(makeLikeCommand)) {
             if(currentPost == null)
                 return "Error : you need to open Post first";
@@ -68,7 +71,22 @@ public class QueryExecutor {
         }
 
 
+        else if (query.substring(0,shortestPathCommand.length()).equals(shortestPathCommand)){
+            String destination = query.substring(shortestPathCommand.length()+1);
+            if(currentAccount==null) return "Error : " +loginErrorMsg;
+            else if(!graph.containsAccount(destination))
+                return "Error : "+"this account doesn't exist";
 
+            try {
+                ArrayList<String>path = currentAccount.getShortestPath(graph,destination);
+                Visualization.drawShortestPath(graph,true,path);
+                return path.toString();
+            } catch (ShortestPathException e) {
+                return e.getMessage();
+            }
+
+
+        }
         //login
         else if (query.substring(0, loginCommand.length()).equals(loginCommand)) {
             reply = loginQuery(graph, query.substring(loginCommand.length() + 1));
