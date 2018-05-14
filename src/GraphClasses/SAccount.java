@@ -9,6 +9,8 @@ import David.ProjectExceptions.AccountException;
 
 import java.util.*;
 
+import static David.ProjectExceptions.MyExceptionCodes.NO_PATH_FOUND;
+
 public class SAccount {
 
     private String name;
@@ -104,6 +106,7 @@ public class SAccount {
         ArrayList <String > suggestedFriendsNames = new ArrayList<>();
         ArrayList <SuggestedFriend> suggestedFriends = new ArrayList<>();
         HashMap< String, Integer> Detected = new HashMap();
+        HashSet <String> visited = new HashSet<>();
         Queue <String> q = new LinkedList<>();
         if(this.getFriends().size()==(All.getNumberOfAccounts()-1)){
             throw new SuggestedFriendsException(MyExceptionCodes.NO_SUGGESTED_FRIENDS); // user is already friend with all graph.
@@ -111,8 +114,9 @@ public class SAccount {
         /////////////////////Adding All friends of friends to queue q.
         for(int i=0;i<friends.size();i++){
             q.addAll(All.getAccount(friends.get(i)).getFriends());
+            visited.addAll(All.getAccount(friends.get(i)).getFriends());
         }
-        while ((!q.isEmpty())&&Detected.size()<900){
+        while ((!q.isEmpty())){
             String currentUser = q.poll();
             if(!friends.contains(currentUser)&&(!this.name.equals(currentUser))){ ///making sure the friend of friend isn't already a friend or the user himself.
                 Detected.put(currentUser,0);
@@ -122,7 +126,10 @@ public class SAccount {
                         Detected.put(currentUser,Detected.get(currentUser)+1); //// incrementing mutual friends for current user.
                     }
                     else {
-                        q.add(friendOfCurrentUser);
+                        if(!visited.contains(friendOfCurrentUser)) {
+                            q.add(friendOfCurrentUser);
+                            visited.add(friendOfCurrentUser);
+                        }
                     }
                 }
             }
@@ -145,8 +152,8 @@ public class SAccount {
     }
         ArrayList<String> subSuggestedFriendsNames = new ArrayList<>();
         int range;
-        if(suggestedFriendsNames.size()>10)
-            range=10;
+        if(suggestedFriendsNames.size()>numberOfSuggested)
+            range=numberOfSuggested;
         else
             range=suggestedFriendsNames.size();
         for(int i=0;i<range;i++){
@@ -167,6 +174,43 @@ public class SAccount {
         }
             return sortedSuggested;
         }
+
+
+     public ArrayList<String> getShortestPath(SocialGraph All , String destination) throws AccountException , ProjectExceptions.ShortestPathException{
+         ArrayList<String> path = new ArrayList<>();
+         Queue <String> q = new LinkedList<>();
+         HashMap< String, Integer> distance= new HashMap();
+         HashMap <String,String> parent = new HashMap<>();
+         q.add(this.name);
+         distance.put(this.name,0);
+         boolean found = false;
+         while(!q.isEmpty()&& found==false){
+             String currentUser = q.poll();
+             for(int i=0;i<All.getAccount(currentUser).getFriends().size();i++){
+                 String friend = All.getAccount(currentUser).getFriends().get(i);
+                 if(!distance.containsKey(friend)){
+                     parent.put(friend,currentUser);
+                     distance.put(friend,distance.get(currentUser)+1);
+                     q.add(friend);
+                 }
+                  if (friend.equals(destination)){
+                     String pathNode = destination;
+                     path.add(pathNode);
+                     while (!pathNode.equals(this.name)){
+                        pathNode = parent.get(pathNode);
+                        path.add(pathNode);
+                     }
+                     found = true;
+                 }
+             }
+         }
+         if(path.size()==0){
+             throw new ProjectExceptions.ShortestPathException(MyExceptionCodes.NO_PATH_FOUND);
+         }
+         else
+             return path;
+
+     }
 
 
 
