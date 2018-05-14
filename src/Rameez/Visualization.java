@@ -32,9 +32,9 @@ public class Visualization {
                     if(path.indexOf(users.get(i))<path.size()-1){
                         if(Friends.get(j).equals(path.get(path.indexOf(users.get(i))+1))){
                             g.addEdge(-totalNumEdges, users.get(i), Friends.get(j));
-                            System.out.println(-totalNumEdges);}
-                         }
+                            }
                     }
+                }
                 else
                     g.addEdge(totalNumEdges, users.get(i), Friends.get(j));
                 totalNumEdges = g.getEdgeCount();
@@ -111,7 +111,7 @@ public class Visualization {
             if (i<0){
                 return Color.RED;
             }
-         else {
+            else {
                 return Color.DARK_GRAY;
             }
         };
@@ -129,7 +129,7 @@ public class Visualization {
 
         // vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 
-         vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
+        vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
         // vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
         JFrame frame = new JFrame("Social Network");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
